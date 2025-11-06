@@ -1,0 +1,14 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /cgi-bin/
+Disallow: /private/
+Allow: /
+
+# Optional: delay crawl rate if needed (avoid server overload)
+# Crawl-delay: 10
+
+# Optional: specify host (useful for multi-domain setups)
+Host: https://thehanasachikocompany.com
+
+Sitemap: https://thehanasachikocompany.com/sitemap.xml
+

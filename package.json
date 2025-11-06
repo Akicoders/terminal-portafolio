@@ -1,0 +1,72 @@
+{
+  "name": "terminal",
+  "version": "2.14.7",
+  "license": "MIT",
+  "author": {
+    "name": "Hana Sachiko",
+    "url": "https://thehanasachikocompany.com",
+    "email": "hello@thehanasachikocompany.com"
+  },
+  "funding": {
+    "type": "Paypal",
+    "url": "https://www.paypal.com/paypalme/rico3634/1000000"
+  },
+  "repository": {
+    "type": "web",
+    "url": "https://www.daedalium.com/"
+  },
+  "scripts": {
+    "start": "next start",
+    "build": "next build",
+    "dev": "next dev",
+    "next": "next",
+    "preexport": "next build",
+    "export": "next export",
+    "lint": "eslint .",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@gsap/react": "^2.1.0",
+    "@headlessui/react": "^1.7.17",
+    "@radix-ui/react-scroll-area": "^1.0.5",
+    "@vercel/speed-insights": "^1.0.2",
+    "ai": "^2.2.29",
+    "axios": "^1.6.0",
+    "cowsay-browser": "^1.1.8",
+    "dat.gui": "^0.7.9",
+    "date-fns": "^2.30.0",
+    "framer-motion": "^10.17.12",
+    "glslify-loader": "^2.0.0",
+    "gsap": "^3.12.4",
+    "imagesloaded": "^5.0.0",
+    "next": "^14.0.4",
+    "node": "^24.9.0",
+    "openai": "^4.20.1",
+    "openai-edge": "^1.2.2",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "resend": "^6.2.2",
+    "splitting": "^1.0.6",
+    "three": "^0.160.0",
+    "three-plain-animator": "^1.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.4",
+    "@types/react": "^18.2.33",
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "@typescript-eslint/parser": "^6.9.1",
+    "autoprefixer": "^10.4.16",
+    "eslint": "8.52.0",
+    "eslint-config-next": "^14.0.1",
+    "eslint-plugin-next": "^0.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-react": "^7.33.2",
+    "husky": "^8.0.3",
+    "postcss": "^8.4.31",
+    "prettier": "^3.0.3",
+    "tailwindcss": "^3.3.5"
+  },
+  "engines": {
+    "node": ">=22.0"
+  }
+}

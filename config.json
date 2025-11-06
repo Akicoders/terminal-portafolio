@@ -1,0 +1,10 @@
+{
+  "bioUrl": "https://www.daedalium.com/",
+  "social": {
+    "instagram": "daedalium",
+    "github": "mr-daedalium",
+    "linkedin": "daedalium"
+  },
+  "theme": "homebrew",
+  "border": true
+}

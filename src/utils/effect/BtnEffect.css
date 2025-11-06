@@ -1,0 +1,81 @@
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
+
+body {
+	margin: 0;
+	color: var(--color-text);
+	background-color: var(--color-bg);
+	font-family: "neue-haas-grotesk-text",-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+	--color-text: #fff;
+	--color-bg: #000;
+	--color-link: rgb(142, 100, 255);
+	--color-link-hover: rgb(249, 38, 114);
+}
+
+.item{
+    background: var(--color-bg);
+}
+
+.img {
+
+	width: 100%;
+	aspect-ratio: 6;
+	position: relative;
+	overflow: hidden;
+    display: grid;
+	place-items: center;
+	--x: 0px; 
+	--y: 0px;
+}
+
+.img::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: radial-gradient(rgb(0, 0, 0) 20%, rgb(34, 32, 32) 30%, rgb(119, 118, 120) 75%, rgba(255, 255, 255, 0.75));
+	mix-blend-mode: darken;
+	isolation: isolate;
+}
+
+.grid__item-img-deco {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	font-family: "input-mono", monospace;
+	font-size: 0.35rem;
+	word-wrap: break-word;
+	line-height: 1.15;
+	color: #fff;
+	opacity: 0;
+	-webkit-mask-image: radial-gradient(300px circle at var(--x) var(--y), black 20%, rgba(0,0,0,0.01), transparent);
+	mask-image: radial-gradient(300px circle at var(--x) var(--y), black 20%, rgba(0,0,0,0.01), transparent);
+}
+
+.link{
+    text-decoration: none;
+    color: #a6a6ab;
+    padding: 0 1rem;
+}
+.want{
+    z-index: 2;
+	align-content: center;
+}
+
+.link:hover{
+    text-shadow: 0 0 4px #fff;
+}
+
