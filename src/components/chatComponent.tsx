@@ -1,38 +1,46 @@
 "use client"
-import {useChat} from "ai/react"
-import React, {useEffect, useState} from "react"
-import {commandExists} from "./../utils/commandExists"
-import {useShell} from "./../utils/shellProvider"
-import {useTheme} from "./../utils/themeProvider"
-import {Ps1} from "./ps1"
-import {History} from "./history"
+import { useChat } from "ai/react"
+import React, { useEffect, useState } from "react"
+import { commandExists } from "./../utils/commandExists"
+import { useShell } from "./../utils/shellProvider"
+import { useTheme } from "./../utils/themeProvider"
+import { useAppearance } from "./../utils/appearanceProvider"
+import { useI18n } from "./../utils/i18n"
+import { Ps1 } from "./ps1"
+import { History } from "./history"
 import ThreeCanvas from "./ps1/nes"
 
-export const ChatComponent = ({inputRef, containerRef}) => {
-  const [placeholder, setPlaceholder] = useState(
-    "Talk to Hana Sachiko or type “help” if you are lost …",
-  )
+export const ChatComponent = ({ inputRef, containerRef }) => {
+  const { t } = useI18n()
+  const [placeholder, setPlaceholder] = useState("")
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 555) {
-        setPlaceholder("Talk to Hana Sachiko or type “help”")
+        setPlaceholder(t('chat.placeholderShort'))
       } else {
-        setPlaceholder("Talk to Hana Sachiko or type “help” if you are lost …")
+        setPlaceholder(t('chat.placeholder'))
       }
     }
 
-    handleResize() 
+    handleResize()
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
-  }, [])
+  }, [t])
 
-  const {input, setInput, handleInputChange, handleSubmit, messages} = useChat()
+  const { input, setInput, handleInputChange, handleSubmit, messages } = useChat()
 
-  const {theme} = useTheme()
+  const { theme } = useTheme()
+  const { mode } = useAppearance()
   const [value, setValue] = useState("")
   const [showCanvas, setShowCanvas] = useState(false)
   var [lastKeyCode, setLastKeyCode] = useState(null)
+
+  // Appearance-aware colors
+  const inputBgColor = mode === 'light' ? '#f5f5f5' : theme.background
+  const inputTextColor = mode === 'light'
+    ? (commandExists(value) || value === "" ? '#22863a' : '#cb2431')
+    : (commandExists(value) || value === "" ? theme.green : theme.red)
   const {
     setCommand,
     history,
@@ -55,7 +63,7 @@ export const ChatComponent = ({inputRef, containerRef}) => {
 
   const onSubmit = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     const commands: string[] = history
-      .map(({command}) => command)
+      .map(({ command }) => command)
       .filter((value: string) => value)
 
     if (event.key === "c" && event.ctrlKey) {
@@ -134,9 +142,8 @@ export const ChatComponent = ({inputRef, containerRef}) => {
           className="focus:outline-none flex-grow"
           aria-label="prompt"
           style={{
-            backgroundColor: theme.background,
-            color:
-              commandExists(value) || value === "" ? theme.green : theme.red,
+            backgroundColor: inputBgColor,
+            color: inputTextColor,
           }}
           value={input || value}
           onChange={(event) => {

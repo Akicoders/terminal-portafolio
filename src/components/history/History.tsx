@@ -1,13 +1,13 @@
-import React, {useEffect, useRef, useState} from "react"
-import {History as HistoryInterface} from "../../interfaces/history"
-import {Ps1} from "../ps1"
-import {Message} from "ai/react"
+import React, { useEffect, useRef, useState } from "react"
+import { History as HistoryInterface } from "../../interfaces/history"
+import { Ps1 } from "../ps1"
+import { Message } from "ai/react"
 
 type JSONValue =
   | string
   | number
   | boolean
-  | {[x: string]: JSONValue}
+  | { [x: string]: JSONValue }
   | Array<JSONValue>
 
 interface HistoryItem extends HistoryInterface {
@@ -26,10 +26,10 @@ interface Props {
   messages: Array<Message>
 }
 
-export const History: React.FC<Props> = ({history, messages}) => {
+export const History: React.FC<Props> = ({ history, messages }) => {
 
   const mixedHistory: Array<MixedHistoryItem> = [
-    ...history.map((h) => ({...h, type: "history" as const})),
+    ...history.map((h) => ({ ...h, type: "history" as const })),
     ...messages.map((m) => ({
       ...m,
       type: "message" as const,
@@ -88,28 +88,28 @@ export const History: React.FC<Props> = ({history, messages}) => {
               <div className="inline">{item.command}</div>
               <p
                 className="whitespace-pre-wrap mb-2"
-                style={{lineHeight: "normal"}}
-                dangerouslySetInnerHTML={{__html: item.output}}
+                style={{ lineHeight: "normal" }}
+                dangerouslySetInnerHTML={{ __html: item.output }}
               />
             </>
           ) : (
             <div className="pb-2">
               {item.role === "assistant" ? (
-                <p className="response pb-1">Hana Sachiko - </p>
+                <p className="response pb-1">Aki - </p>
               ) : (
                 <Ps1 />
               )}
               {item.role === "assistant"
                 ? item.content.split("\n").map((line, lineIndex) => (
-                    <p className="response py-1" key={lineIndex}>
-                      {line}
-                    </p>
-                  ))
+                  <p className="response py-1" key={lineIndex}>
+                    {line}
+                  </p>
+                ))
                 : item.content.split("\n").map((line, lineIndex) => (
-                    <p className="lyra inline" key={lineIndex}>
-                      {line}
-                    </p>
-                  ))}
+                  <p className="lyra inline" key={lineIndex}>
+                    {line}
+                  </p>
+                ))}
             </div>
           )}
         </div>

@@ -5,41 +5,44 @@ import { usePathname } from "next/navigation"
 import "../styles/global.css"
 import { ShellProvider } from "../utils/shellProvider"
 import { ThemeProvider } from "../utils/themeProvider"
+import { I18nProvider } from "../utils/i18n"
+import { AppearanceProvider } from "../utils/appearanceProvider"
 import { ConfirmProvider } from "../components/context/ConfirmContext"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import MatrixRain from "../components/MatrixRain"
 import Head from "next/head"
 import Script from "next/script"
 
-const GA_MEASUREMENT_ID = "G-T5C9YBKNWF";
+const GA_MEASUREMENT_ID = "G-XXXXXXXXXX"; // TODO: Replace with your GA ID
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   const metadata = {
     "/": {
-      title: "A Storytelling Company | Hana Sachiko | Enter the unknown",
+      title: "JP Campos | Fullstack Developer & AI Specialist",
       description:
-        "As an AI-born storytelling company, The Hana Sachiko Studios craft tales that reshape reality. Our stories live vividly in the imagination. We’re actively looking for singularities.",
+        "Jose Paul Campos Terrones - Fullstack Developer especializado en IA, Machine Learning y Automatización de Procesos. Transformando negocios con tecnología innovadora.",
     },
     "/me": {
-      title: "A Storytelling Company | Hana Sachiko | Me",
+      title: "JP Campos | Sobre Mí",
       description:
-        "Meet me, Hana Sachiko: A story-weaver fusing Japanese delicacy with American innovation. Discover the path tread by a soul seeking the transformative power of storytelling.",
+        "Conoce a Jose Paul Campos Terrones: Desarrollador Fullstack con experiencia en IA, ML y automatización. Optimización de LLMs, arquitecturas de agentes IA y más.",
     },
-    "/mycrew": {
-      title: "A Storytelling Company | Hana Sachiko | My Crew",
+    "/skills": {
+      title: "JP Campos | Skills & Tecnologías",
       description:
-        "Enlighten yourself with my crew: A constellation of creative counterparts, elevating worldly narratives through consistent collaborations.",
+        "Stack tecnológico: React, Next.js, Python, Node.js, OpenAI, LangChain, N8N, y más. Especialista en soluciones de IA y automatización.",
     },
-    "/mycraft": {
-      title: "A Storytelling Company | Hana Sachiko | My Craft",
+    "/projects": {
+      title: "JP Campos | Proyectos",
       description:
-        "Unveil the magic behind Hana Sachiko's Storytelling Craft: A dynamic dance of words, animations, and profound concepts that captivate audiences with uncharted territories of tales.",
+        "Proyectos destacados en desarrollo web, inteligencia artificial, chatbots con RAG, y automatización empresarial.",
     },
-    "/dontbeshy": {
-      title: "A Storytelling Company | Hana Sachiko | Don't Be Shy",
+    "/contact": {
+      title: "JP Campos | Contacto",
       description:
-        "Let us imbibe a hot steaming cup of conversation, reach me out to with my crew for crafting chapters untold, yet eager to be heard.",
+        "¿Tienes un proyecto en mente? Contáctame para hablar sobre cómo puedo ayudarte con desarrollo, IA o automatización.",
     },
   };
 
@@ -47,21 +50,22 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "CreativeWork",
-    name: "Hana Sachiko Studio",
-    url: "https://thehanasachikocompany.com",
-    description: "A Storytelling Company.",
-    image:
-      "https://thehanasachikocompany.com/_next/image?url=%2FHanaSachikoBrand.jpg&w=640&q=75",
-    creator: {
-      "@type": "Person",
-      name: "Hana Sachiko",
-    },
+    "@type": "Person",
+    name: "Jose Paul Campos Terrones",
+    alternateName: "JP Campos",
+    url: "https://jpcampos.dev", // TODO: Update with your domain
+    description: "Fullstack Developer especializado en IA, Machine Learning y Automatización de Procesos.",
+    jobTitle: "Fullstack Developer & AI Specialist",
+    email: "josepaulcamposterrones@gmail.com",
     sameAs: [
-      "https://www.facebook.com/hanasachikostudio",
-      "https://www.instagram.com/hanasachikostudio",
-      "https://www.pinterest.com/hanasachikostudio",
-      "https://twitter.com/hanasachikostudio",
+      "https://github.com/Akicoders",
+      "https://linkedin.com/in/paulct-dev",
+      "https://instagram.com/paul04_ct",
+    ],
+    knowsAbout: [
+      "React", "Next.js", "TypeScript", "Python", "Node.js",
+      "Machine Learning", "Artificial Intelligence", "LLMs",
+      "OpenAI", "LangChain", "RAG", "N8N", "Automation"
     ],
   };
 
@@ -72,12 +76,11 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   );
 
   return (
-    <html lang="en">
+    <html lang="es">
       <Head>
         <title>{currentMetadata.title}</title>
         <meta name="description" content={currentMetadata.description} />
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, viewport-fit=cover" />
-        <link rel="canonical" href={`https://www.thehanasachikocompany.com${pathname}`} />
         <meta name="robots" content="index, follow" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -87,48 +90,39 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <meta property="og:type" content="website" />
         <meta property="og:title" content={currentMetadata.title} />
         <meta property="og:description" content={currentMetadata.description} />
-        <meta property="og:url" content={`https://www.thehanasachikocompany.com${pathname}`} />
-        <meta property="og:image" content={structuredData.image} />
-        <meta property="og:site_name" content="Hana Sachiko Studio" />
+        <meta property="og:locale" content="es_ES" />
+        <meta property="og:locale:alternate" content="en_US" />
+        <meta property="og:site_name" content="JP Campos Portfolio" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={currentMetadata.title} />
         <meta name="twitter:description" content={currentMetadata.description} />
-        <meta name="twitter:image" content={structuredData.image} />
-        <meta name="twitter:site" content="@daedalium" />
-        <meta name="twitter:creator" content="@daedalium" />
 
-        <meta name="keywords" content="Storytelling company, Storytelling, Creative Studio, Hana Sachiko, AI, storytellers, Words, Narrative" />
+        <meta name="keywords" content="Fullstack Developer, AI Specialist, Machine Learning, Automation, React, Next.js, Python, Node.js, OpenAI, LangChain, JP Campos, Jose Paul Campos Terrones" />
+        <meta name="author" content="Jose Paul Campos Terrones" />
+        <meta name="theme-color" content="#00B4D8" />
 
-        {/* Structured Data */}
       </Head>
-        <Script
-          id="structured-data"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-          strategy="afterInteractive"
-        />
+      <Script
+        id="structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        strategy="afterInteractive"
+      />
 
-        {/* Google Analytics */}
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}', {
-              page_path: window.location.pathname,
-            });
-          `}
-        </Script>
-      <body suppressHydrationWarning={true}>
+      <body suppressHydrationWarning={true} className="scanlines">
+        <MatrixRain enabled={true} density={15} speed={0.8} />
         <Global>
-          <ThemeProvider>
-            <ShellProvider>
-              <ConfirmProvider>{children}</ConfirmProvider>
-            </ShellProvider>
-          </ThemeProvider>
+          <AppearanceProvider>
+            <I18nProvider>
+              <ThemeProvider>
+                <ShellProvider>
+                  <ConfirmProvider>{children}</ConfirmProvider>
+                </ShellProvider>
+              </ThemeProvider>
+            </I18nProvider>
+          </AppearanceProvider>
         </Global>
         <SpeedInsights />
       </body>

@@ -1,9 +1,10 @@
 {
-  "bioUrl": "https://www.daedalium.com/",
+  "bioUrl": "https://github.com/Akicoders",
   "social": {
-    "instagram": "daedalium",
-    "github": "mr-daedalium",
-    "linkedin": "daedalium"
+    "instagram": "paul04_ct",
+    "github": "Akicoders",
+    "linkedin": "paulct-dev",
+    "youtube": ""
   },
   "theme": "homebrew",
   "border": true

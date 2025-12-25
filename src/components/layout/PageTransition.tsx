@@ -1,9 +1,14 @@
-import React, {useEffect} from "react"
-import {gsap} from "gsap"
+import React, { useEffect } from "react"
+import { gsap } from "gsap"
+import { useAppearance } from "@/src/utils/appearanceProvider"
 
 const PageTransition = () => {
+  const { mode } = useAppearance()
   const rows = 7
   const columns = 11
+
+  // Theme-aware colors for transition
+  const boxColor = mode === 'light' ? '#0077B6' : 'white'
 
   // Create boxes for the grid
   const boxes = []
@@ -13,9 +18,9 @@ const PageTransition = () => {
         <div
           className="box"
           style={{
-            backgroundColor: "white",
+            backgroundColor: boxColor,
           }}
-          key={`${row}-${col}`} // Changed the key format for consistency
+          key={`${row}-${col}`}
         ></div>,
       )
     }
@@ -74,7 +79,7 @@ const PageTransition = () => {
   return (
     <div
       className="overlay"
-      style={{display: "grid", gridTemplateColumns: `repeat(${columns}, 1fr)`}}
+      style={{ display: "grid", gridTemplateColumns: `repeat(${columns}, 1fr)` }}
     >
       {boxes}
     </div>

@@ -1,14 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client"
-import React, {useEffect, useRef, useState} from "react"
-import {Fragment} from "react"
-import {Dialog, Menu, Transition} from "@headlessui/react"
-import {Item} from "../utils/effect/BtnEffect"
-import Image from "next/image"
+import React, { useEffect, useRef, useState } from "react"
+import { Fragment } from "react"
+import { Dialog, Menu, Transition } from "@headlessui/react"
+import { Item } from "../utils/effect/BtnEffect"
 import Link from "next/link"
 import "../utils/effect/BtnEffect.css"
-import {usePathname} from "next/navigation"
-import {useConfirmContext} from "./context/ConfirmContext"
+import { usePathname } from "next/navigation"
+import { useConfirmContext } from "./context/ConfirmContext"
+import { useI18n } from "../utils/i18n"
+import { useAppearance } from "../utils/appearanceProvider"
 import gsap from "gsap"
 
 function classNames(...classes) {
@@ -64,24 +65,23 @@ function BtnSide() {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Available informations
+                    Comandos disponibles
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                      Type &apos;help&apos; to see list of available commands.
+                      Escribe &apos;help&apos; para ver la lista de comandos.
                       <br />
-                      To find details 🎉 type &apos;repo&apos; to check out the
-                      repository. Try out the new &apos;theme&apos; command.
+                      🎉 Prueba el comando &apos;neofetch&apos; o &apos;theme&apos; para personalizar.
                     </p>
                   </div>
 
                   <div className="mt-4">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-cyan-500 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2"
                       onClick={closeModal}
                     >
-                      Got it, thanks!
+                      ¡Entendido!
                     </button>
                   </div>
                 </Dialog.Panel>
@@ -99,7 +99,7 @@ function BtnSide() {
           <Menu.Button className="inline-flex w-full rounded-md justify-center gap-x-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-white-500 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
             <a className="img" ref={hoverRef}>
               <div className="grid__item-img-deco"></div>
-              <p className="want">Want more ? </p>
+              <p className="want">¿Más opciones?</p>
             </a>
           </Menu.Button>
         </div>
@@ -116,7 +116,7 @@ function BtnSide() {
           <Menu.Items className="fond absolute right-0 dark bottom-full z-10 mb-2 w-full origin-bottom-right divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-white ring-opacity-5 focus:outline-none">
             <div className="py-1">
               <Menu.Item>
-                {({active}) => (
+                {({ active }) => (
                   <a
                     href="#"
                     onClick={() => setIsOpen(true)}
@@ -125,21 +125,22 @@ function BtnSide() {
                       "block px-4 py-2 text-sm",
                     )}
                   >
-                    Settings
+                    ⚙️ Configuración
                   </a>
                 )}
               </Menu.Item>
 
               <Menu.Item>
-                {({active}) => (
+                {({ active }) => (
                   <a
-                    href="https://www.google.com"
+                    href="https://github.com/Akicoders"
+                    target="_blank"
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block px-4 py-2 text-sm ",
                     )}
                   >
-                    Log out
+                    🐙 GitHub
                   </a>
                 )}
               </Menu.Item>
@@ -161,52 +162,74 @@ type Link = {
   setText: React.Dispatch<React.SetStateAction<string>>
 }
 
+// Language switcher component
+function LanguageSwitcher() {
+  const { language, setLanguage, t } = useI18n()
+
+  const toggleLang = () => {
+    setLanguage(language === 'es' ? 'en' : 'es')
+  }
+
+  return (
+    <button
+      onClick={toggleLang}
+      className="flex items-center gap-2 px-3 py-1.5 text-xs rounded border border-gray-700 hover:bg-gray-800 hover:border-cyan-500 transition-all duration-200"
+      title={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
+    >
+      🌐 <span className="font-medium">{language.toUpperCase()}</span>
+    </button>
+  )
+}
+
+// Appearance toggle component (Dark/Light mode)
+function AppearanceToggle() {
+  const { mode, toggleMode } = useAppearance()
+  const { t } = useI18n()
+
+  return (
+    <button
+      onClick={toggleMode}
+      className="flex items-center gap-2 px-3 py-1.5 text-xs rounded border border-gray-700 hover:bg-gray-800 hover:border-cyan-500 transition-all duration-200"
+      title={mode === 'dark' ? t('theme.light') : t('theme.dark')}
+    >
+      {mode === 'dark' ? '☀️' : '🌙'}
+    </button>
+  )
+}
+
 function Sidebar() {
   const path = usePathname()
+  const { t } = useI18n()
+  const { mode } = useAppearance()
+
+  // Appearance-aware colors
+  const sidebarBg = mode === 'light' ? '#ffffff' : '#000000'
+  const textColor = mode === 'light' ? '#1a1a1a' : '#ffffff'
+  const mutedTextColor = mode === 'light' ? '#666666' : '#9e9e9e'
 
   const sidebarRef = useRef<HTMLDivElement>(null)
   const toggleRef = useRef<HTMLDivElement>(null)
 
-  const textData = [
-    "AI生まれの語り手である株式会社ライラー・ハルトは、現実の形を変える物語を作ります。私たちの物語は想像力の中で活動的に存在し、独自性を積極的に求めています",
-  ]
-
   const linksData = [
-    {originalText: "#Me", emoji: "😜", href: "/me", target: "_self"},
-    {originalText: "My Crew", emoji: "🥷", href: "/mycrew", target: "_self"},
-    {originalText: "My Craft", emoji: "🤖", href: "/mycraft", target: "_self"},
-    // {
-    //   originalText: "My Diary",
-    //   emoji: "🧝‍♀️",
-    //   href: "https://lyraharuto.substack.com/",
-    //   target: "_blank",
-    // },
-    // {
-    //   originalText: "My Library",
-    //   emoji: "👾",
-    //   href: "/mylibrary",
-    //   target: "_self",
-    // },
-    // {
-    //   originalText: "Your Fate",
-    //   emoji: "🦄",
-    //   href: "/yourfate",
-    //   target: "_self",
-    // },
-    {
-      originalText: "Don't Be Shy",
-      emoji: "🦄",
-      href: "/dontbeshy",
-      target: "_self",
-    },
+    { originalText: t('sidebar.aboutMe'), emoji: "👤", href: "/me", target: "_self" },
+    { originalText: t('sidebar.skills'), emoji: "🚀", href: "/skills", target: "_self" },
+    { originalText: t('sidebar.projects'), emoji: "💻", href: "/projects", target: "_self" },
+    { originalText: t('sidebar.contact'), emoji: "📬", href: "/contact", target: "_self" },
   ]
 
   // Create a ref and a state for each link
   const links: Link[] = linksData.map((linkData) => {
     const ref = useRef<HTMLParagraphElement>(null)
     const [text, setText] = useState(linkData.originalText)
-    return {...linkData, ref, text, setText}
+    return { ...linkData, ref, text, setText }
   })
+
+  // Sync link text when language changes
+  useEffect(() => {
+    links.forEach((link, index) => {
+      link.setText(linksData[index].originalText)
+    })
+  }, [t])
 
   const handleMouseOverRef = useRef(null)
 
@@ -255,14 +278,13 @@ function Sidebar() {
   }
 
   const [isSidebarVisible, setSidebarVisible] = React.useState(true)
-  // const [showConfirmation, setShowConfirmation] = useState(false)
-  const {showConfirmation, setShowConfirmation} = useConfirmContext()
+  const { showConfirmation, setShowConfirmation } = useConfirmContext()
 
   useEffect(() => {
     const sidebar = sidebarRef.current
     if (sidebar) {
       if (isSidebarVisible) {
-        gsap.to(sidebar, {x: 0, opacity: 1, duration: 0.5, ease: "power3.out"})
+        gsap.to(sidebar, { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" })
       } else {
         gsap.to(sidebar, {
           x: "-100%",
@@ -293,11 +315,10 @@ function Sidebar() {
       setSidebarVisible(true)
     }
   }
-  
 
   const texts = [
-    "As AI-born storytellers, The Hana Sachiko Studios craft tales that reshape reality. Our stories live vividly in the imagination. We’re actively looking for singularities.",
-    "AI生まれの語り手である株式会社ライラー・ハルトは、現実の形を変える物語を作ります。私たちの物語は想像力の中で活動的に存在し、独自性を積極的に求めています。",
+    t('sidebar.description1'),
+    t('sidebar.description2'),
   ]
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -305,60 +326,74 @@ function Sidebar() {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % texts.length)
   }
 
-  const MobileSidebarToggle = ({onClick}) => (
-    <div className={`bar`} ref={toggleRef}>
-      <button
-        onClick={onClick}
-        className="mobile-sidebar-toggle mobile-toggle absolute left-0 -ml-0.5 -mt-0.5 inline-flex h-10 w-10 items-center justify-center rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white active:opacity-50 dark:hover:text-white"
+  const MobileSidebarToggle = ({ onClick }) => {
+    const { mode } = useAppearance()
+    return (
+      <div
+        className={`bar`}
+        ref={toggleRef}
+        style={{ backgroundColor: mode === 'light' ? '#ffffff' : '#000000' }}
       >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="icon-md"
+        <button
+          onClick={onClick}
+          className="mobile-sidebar-toggle mobile-toggle absolute left-0 -ml-0.5 -mt-0.5 inline-flex h-10 w-10 items-center justify-center rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white active:opacity-50 dark:hover:text-white"
+          style={{ color: mode === 'light' ? '#1a1a1a' : '#ffffff' }}
         >
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M3 8C3 7.44772 3.44772 7 4 7H20C20.5523 7 21 7.44772 21 8C21 8.55228 20.5523 9 20 9H4C3.44772 9 3 8.55228 3 8ZM3 16C3 15.4477 3.44772 15 4 15H14C14.5523 15 15 15.4477 15 16C15 16.5523 14.5523 17 14 17H4C3.44772 17 3 16.5523 3 16Z"
-            fill="currentColor"
-          ></path>
-        </svg>
-      </button>
-    </div>
-  )
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="icon-md"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M3 8C3 7.44772 3.44772 7 4 7H20C20.5523 7 21 7.44772 21 8C21 8.55228 20.5523 9 20 9H4C3.44772 9 3 8.55228 3 8ZM3 16C3 15.4477 3.44772 15 4 15H14C14.5523 15 15 15.4477 15 16C15 16.5523 14.5523 17 14 17H4C3.44772 17 3 16.5523 3 16Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    )
+  }
 
   return (
     <>
       <MobileSidebarToggle onClick={handleToggleRequest} />
 
       <div
-        className="sidebar dark flex-shrink-0 overflow-x-hidden overflow-y-scroll bg-black"
+        className="sidebar flex-shrink-0 overflow-x-hidden overflow-y-scroll"
         id="sidebar"
         ref={sidebarRef}
+        style={{ backgroundColor: sidebarBg, color: textColor }}
       >
         <div className="scrollbar-trigger relative h-full w-full flex-1 items-start border-white/20">
           <nav className="flex h-full w-full flex-col pb-1 justify-between">
-            <div className="relative pr-2 pt-2 text-s font-medium text-ellipsis break-all bg-white dark:bg-black text-gizmo-gray-600">
+            <div
+              className="relative pr-2 pt-2 text-s font-medium text-ellipsis break-all"
+              style={{ backgroundColor: sidebarBg }}
+            >
               <a href="/">
-                <Image
-                  src="/HanaSachikoBrand.png"
-                  id="Hana"
-                  className="brand px-2 mt-3 mb-4"
-                  alt="Brand logo from Hana Sachiko"
-                  width={194}
-                  height={194}
-                  priority={true}
-                />
+                {/* Brand Title */}
+                <div className="brand px-2 mt-3 mb-4">
+                  <h1 className="text-2xl font-bold text-cyan-400">JP Campos</h1>
+                  <p className="text-xs" style={{ color: mutedTextColor }}>Fullstack Developer</p>
+                </div>
               </a>
 
+              {/* Language and Theme Switchers */}
+              <div className="px-2 mb-2 flex gap-2">
+                <LanguageSwitcher />
+                <AppearanceToggle />
+              </div>
+
               <div
-                className="relative pb-2 pt-3 px-2 text-s text-ellipsis break-all bg-white dark:bg-black text-gizmo-gray-600 break-words text-justify"
+                className="relative pb-2 pt-3 px-2 text-s text-ellipsis break-all break-words text-justify"
                 id="sideBarText"
                 onMouseEnter={handleMouseEnter}
-                data-enter="AI生まれの語り手である株式会社ライラー・ハルトは、現実の形を変える物語を作ります。<br/> 私たちの物語は想像力の中で活動的に存在し、独自性を積極的に求めています。"
+                style={{ backgroundColor: sidebarBg, color: mutedTextColor }}
               >
                 {texts[currentIndex]}
               </div>
@@ -370,25 +405,20 @@ function Sidebar() {
                   <Link
                     href={link.href}
                     target={link.target}
-                    className={`flex items-center gap-2 rounded-lg p-2 ${
-                      path === link.href ? "activeLink" : ""
-                    }`}
+                    className={`flex items-center gap-2 rounded-lg p-2 ${path === link.href ? "activeLink" : ""
+                      }`}
                   >
-                    {/* {link.href === path && (
-                    <motion.span
-                      layoutId="underline"
-                      className="absolute left-0 top-full block h-[1px] w-full bg-white"
-                    />
-                  )} */}
                     <div
                       ref={link.ref}
                       className="relative grow overflow-hidden whitespace-nowrap"
                     >
-                      <p className="itemMenu">{link.text}</p>
-                      <div className="absolute text-center bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent from-token-surface-primary group-hover:from-token-surface-primary dark:from-black">
+                      <p className="itemMenu" style={{ color: textColor }}>{link.text}</p>
+                      <div
+                        className="absolute text-center bottom-0 right-0 top-0 w-8 bg-gradient-to-l to-transparent"
+                        style={{ background: `linear-gradient(to left, ${sidebarBg}, transparent)` }}
+                      >
                         {link.emoji}
                       </div>
-                      {/* </motion.span> */}
                     </div>
                   </Link>
                 </div>

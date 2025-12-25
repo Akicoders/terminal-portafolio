@@ -1,13 +1,19 @@
-import React, {useEffect} from "react"
-import {useTheme} from "../../utils/themeProvider"
+import React, { useEffect } from "react"
+import { useTheme } from "../../utils/themeProvider"
+import { useAppearance } from "../../utils/appearanceProvider"
 import gsap from "gsap"
 
 interface Props {
   children: React.ReactNode
 }
 
-const Layout: React.FC<Props> = ({children}) => {
-  const {theme} = useTheme()
+const Layout: React.FC<Props> = ({ children }) => {
+  const { theme } = useTheme()
+  const { mode } = useAppearance()
+
+  // Light mode colors
+  const bgColor = mode === 'light' ? '#f5f5f5' : theme.background
+  const fgColor = mode === 'light' ? '#1a1a1a' : theme.foreground
 
   const rows = 7
   const columns = 11
@@ -20,7 +26,7 @@ const Layout: React.FC<Props> = ({children}) => {
         <div
           className="box"
           style={{
-            backgroundColor: theme.foreground,
+            backgroundColor: fgColor,
           }}
           key={`${row}+${col}`}
         ></div>,
@@ -76,13 +82,13 @@ const Layout: React.FC<Props> = ({children}) => {
     <div
       className="terminal relative flex h-full max-w-full flex-1 flex-col overflow-hidden"
       style={{
-        color: theme.foreground,
+        color: fgColor,
       }}
     >
       <main
         className="w-full h-full p-2"
         style={{
-          background: theme.background,
+          background: bgColor,
         }}
       >
         {children}

@@ -1,19 +1,19 @@
 {
-  "name": "terminal",
-  "version": "2.14.7",
+  "name": "jp-campos-portfolio",
+  "version": "1.0.0",
   "license": "MIT",
   "author": {
-    "name": "Hana Sachiko",
-    "url": "https://thehanasachikocompany.com",
-    "email": "hello@thehanasachikocompany.com"
+    "name": "Jose Paul Campos Terrones",
+    "url": "https://github.com/Akicoders",
+    "email": "josepaulcamposterrones@gmail.com"
   },
   "funding": {
     "type": "Paypal",
     "url": "https://www.paypal.com/paypalme/rico3634/1000000"
   },
   "repository": {
-    "type": "web",
-    "url": "https://www.daedalium.com/"
+    "type": "git",
+    "url": "https://github.com/Akicoders"
   },
   "scripts": {
     "start": "next start",

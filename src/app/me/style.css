@@ -23,7 +23,7 @@ body {
   align-items: center;
   font-size: clamp(3rem, 10vw, 10rem);
   letter-spacing: 0.1em;
-  color: #fff;
+  color: var(--theme-fg);
   mix-blend-mode: difference;
   pointer-events: none;
 }
@@ -38,7 +38,7 @@ body {
 
 .OussamaAmmar {
   padding: 0;
-  color: white;
+  color: var(--theme-fg);
   text-decoration: none;
 }
 
@@ -87,7 +87,7 @@ figcaption {
 }
 
 .aspectm {
-  border: 10px solid white;
+  border: 10px solid var(--theme-border);
 }
 
 .grid__item-img {
@@ -207,6 +207,7 @@ figcaption {
   figcaption {
     font-size: 17px;
   }
+
   body {
     overflow-y: scroll;
   }
@@ -368,8 +369,8 @@ figcaption {
 }
 
 @media (max-width: 1281px) and (min-width: 761px) {
-  body {
-  }
+  body {}
+
   #Me {
     padding: 2rem 0;
   }
@@ -407,6 +408,7 @@ figcaption {
   #printemps {
     display: none;
   }
+
   .lined {
     font-size: 19px;
   }
@@ -414,11 +416,8 @@ figcaption {
   #Me {
     overflow-x: hidden;
   }
-  #Me
-    > div:nth-child(1)
-    > div
-    > div.wrap.flex.items-center.w-full.justify-center
-    > div.flex.flex-row.justify-center.pl-\[45px\].z-30.items-center.swap {
+
+  #Me>div:nth-child(1)>div>div.wrap.flex.items-center.w-full.justify-center>div.flex.flex-row.justify-center.pl-\[45px\].z-30.items-center.swap {
     padding-left: 0;
   }
 }

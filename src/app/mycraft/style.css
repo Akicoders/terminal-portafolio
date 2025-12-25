@@ -1,6 +1,7 @@
 .lyratitle {
-  text-shadow: 0 0 4px #fff;
+  text-shadow: 0 0 4px var(--theme-fg);
 }
+
 main {
   overflow: auto;
   -ms-overflow-style: none;
@@ -10,6 +11,7 @@ main {
 main::-webkit-scrollbar {
   display: none;
 }
+
 @media (min-width: 1080px) {
   .mob {
     display: none;
@@ -20,6 +22,7 @@ main::-webkit-scrollbar {
   .terminal {
     width: 100%;
   }
+
   .desk {
     display: none;
   }
@@ -36,8 +39,8 @@ main {
 .overbox {
   position: absolute;
   z-index: 10;
-  color: black;
-  background-color: black;
+  color: var(--theme-bg);
+  background-color: var(--theme-bg);
   box-shadow: none;
   text-shadow: none;
 }
@@ -46,12 +49,12 @@ main {
   font-family: "Technor-Variable";
   font-weight: 400;
   font-size: 6rem;
-  color: white;
+  color: var(--theme-fg);
   transition: all 0.6s ease;
   /* opacity: 0; */
   transform: translateY(150px);
   text-transform: uppercase;
-  text-shadow: 0 0 4px #fff;
+  text-shadow: 0 0 4px var(--theme-fg);
 }
 
 .itemPoster--visible {

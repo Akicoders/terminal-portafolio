@@ -1,6 +1,7 @@
 export * from "./about"
 export * from "./projects"
 export * from "./social"
+// Note: youtube is exported from social.ts
 export * from "./theme"
 export * from "./utils"
 export * from "./weather"
@@ -10,3 +11,4 @@ export * from "./cowsay"
 export * from "./snake"
 export * from "./enigma"
 export * from "./curiosity"
+export * from "./impact"

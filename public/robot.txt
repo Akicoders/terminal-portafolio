@@ -1,14 +1,8 @@
 User-agent: *
-Disallow: /admin/
-Disallow: /cgi-bin/
-Disallow: /private/
 Allow: /
 
-# Optional: delay crawl rate if needed (avoid server overload)
-# Crawl-delay: 10
+# Host
+Host: https://jpcampos.dev
 
-# Optional: specify host (useful for multi-domain setups)
-Host: https://thehanasachikocompany.com
-
-Sitemap: https://thehanasachikocompany.com/sitemap.xml
-
+# Sitemap
+Sitemap: https://jpcampos.dev/sitemap.xml

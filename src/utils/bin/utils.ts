@@ -20,15 +20,15 @@ export const date = async (args: string[]): Promise<string> => {
 }
 
 export const gui = async (args: string[]): Promise<string> => {
-  window.open("https://linkedin.com/in/oussamaammar/", "_self")
+  window.open("https://linkedin.com/in/paulct-dev/", "_self")
 
-  return "Opening GUI version..."
+  return "Opening LinkedIn profile... 💼"
 }
 
 export const email = async (args: string[]): Promise<string> => {
-  window.open("mailto:iam@thelyraharuto.com")
+  window.open("mailto:josepaulcamposterrones@gmail.com")
 
-  return "Opening mailto:hello@thehanasachikocompany.com..."
+  return "Opening email client... 📧 josepaulcamposterrones@gmail.com"
 }
 
 export const vi = async (args: string[]): Promise<string> => {
@@ -57,10 +57,10 @@ export const sudo = async (args?: string[]): Promise<string> => {
 
 export const repo = async (args?: string[]): Promise<string> => {
   setTimeout(function () {
-    window.open("https://github.com/e-cesar9/The-Hana-Sachiko-Company", "_blank")
+    window.open("https://github.com/Akicoders", "_blank")
   }, 1000)
 
-  return "Opening repository..."
+  return "Opening GitHub repositories... 🐙"
 }
 
 export const donate = async (args?: string[]): Promise<string> => {
@@ -71,15 +71,25 @@ export const donate = async (args?: string[]): Promise<string> => {
 
 export const banner = (args?: string[]): string => {
   return `
-v${packageJson.version}
-
-Type 'help' to see list of available commands.
-
---
-The project is visible 🎉 type 'repo' to check out the repository.
-
-New 🎉: Try out the new 'theme' command. See all available themes <a href="https://daedelium.com">in the docs</a>.
-New 🎉: New command 'neofetch', for you linux.
---
+  ╔═══════════════════════════════════════════════════════════════════╗
+  ║      ██╗██████╗      ██████╗ █████╗ ███╗   ███╗██████╗  ██████╗  ║
+  ║      ██║██╔══██╗    ██╔════╝██╔══██╗████╗ ████║██╔══██╗██╔═══██╗ ║
+  ║      ██║██████╔╝    ██║     ███████║██╔████╔██║██████╔╝██║   ██║ ║
+  ║ ██   ██║██╔═══╝     ██║     ██╔══██║██║╚██╔╝██║██╔═══╝ ██║   ██║ ║
+  ║ ╚█████╔╝██║         ╚██████╗██║  ██║██║ ╚═╝ ██║██║     ╚██████╔╝ ║
+  ║  ╚════╝ ╚═╝          ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝      ╚═════╝  ║
+  ╚═══════════════════════════════════════════════════════════════════╝
+  
+  🚀 Fullstack Developer | AI Specialist | Automation Expert
+  
+  v${packageJson.version}
+  
+  Escribe 'help' para ver los comandos disponibles.
+  Escribe 'about' para conocerme.
+  O simplemente escríbeme algo y hablaremos con Aki 🤖
+  
+   ──────────────────────────────────────────────────────────────────────
+  💡 Tips: 'impact', 'video', 'projects', 'theme', 'neofetch'
+  ──────────────────────────────────────────────────────────────────────
 `
 }
