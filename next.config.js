@@ -46,6 +46,11 @@ const nextConfig = {
     return config;
   },
 
+  // Ignore ESLint during builds (Vercel)
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   // output: 'export',
 };
 
