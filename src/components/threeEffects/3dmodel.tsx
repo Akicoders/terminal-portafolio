@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useRef } from "react"
 import * as THREE from "three"
+// @ts-ignore - three.js types issue with bundler resolution
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 
 export default function Models({ modelUrl }: { modelUrl: string }) {

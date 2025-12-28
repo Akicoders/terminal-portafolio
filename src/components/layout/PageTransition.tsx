@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { gsap } from "gsap"
-import { useAppearance } from "@/src/utils/appearanceProvider"
+import { useAppearance } from "../../utils/appearanceProvider"
 
 const PageTransition = () => {
   const { mode } = useAppearance()

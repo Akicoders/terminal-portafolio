@@ -3,9 +3,9 @@ import React from "react"
 import Sidebar from "../../components/sideBar"
 import "./style.css"
 import gsap from "gsap"
-import PageTransition from "@/src/components/layout/PageTransition"
+import PageTransition from "../../components/layout/PageTransition"
 
-const DiaryPage = ({}) => {
+const DiaryPage = ({ }) => {
   const [isSuccess, setIsSuccess] = React.useState(false)
   const [message, setMessage] = React.useState(false)
   async function handleSubmit(event) {
@@ -16,7 +16,7 @@ const DiaryPage = ({}) => {
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(object),
       })
 
@@ -153,7 +153,7 @@ const DiaryPage = ({}) => {
     "trunks.png",
   ]
   const [images, setImages] = React.useState<
-    {src: string; x: number; y: number}[]
+    { src: string; x: number; y: number }[]
   >([])
 
   React.useEffect(() => {
@@ -167,7 +167,7 @@ const DiaryPage = ({}) => {
 
       if (Math.random() < 0.7) {
         const randomImageIndex = Math.floor(Math.random() * imagePaths.length)
-        const newImage = {src: imagePaths[randomImageIndex], x, y}
+        const newImage = { src: imagePaths[randomImageIndex], x, y }
         setImages((prevImages) => [...prevImages, newImage])
       } else {
         const randomSoundIndex = Math.floor(Math.random() * soundPaths.length)
@@ -179,14 +179,14 @@ const DiaryPage = ({}) => {
     section?.addEventListener("click", handleMouseMove)
 
     return () => {
-      section?.removeEventListener("click", handleMouseMove) 
+      section?.removeEventListener("click", handleMouseMove)
     }
   }, [])
 
   const scrollRef = React.useRef(null)
 
   const scrollToSection = () => {
-    scrollRef.current.scrollIntoView({behavior: "smooth", block: "start"})
+    scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
   }
 
   return (
@@ -345,90 +345,90 @@ const DiaryPage = ({}) => {
                   }
                 </div>
               )) || (
-                <form onSubmit={handleSubmit} className="">
-                  <div>
+                  <form onSubmit={handleSubmit} className="">
                     <div>
-                      <label htmlFor="NAME">I’m </label>
-                      <input type="text" name="NAME" id="NAME" />
-                      <span id="mce-NAME-HELPERTEXT"></span>
-                    </div>
-                    <div className="mc-field-group">
-                      <label htmlFor="mce-EMAIL">Here is my email</label>
-                      <input
-                        type="email"
-                        name="EMAIL"
-                        id="mce-EMAIL"
-                        required
-                      />
-                      <span
-                        id="mce-EMAIL-HELPERTEXT"
-                        className="helper_text"
-                      ></span>
-                    </div>
-                    <div className="mc-field-group">
-                      <label htmlFor="mce-FROM">
-                        I heard about Hana Sachiko{" "}
-                      </label>
-                      <select name="FROM" className="" id="mce-FROM">
-                        <option></option>
-                        <option value="Instagram">Instagram</option>
-                        <option value="Facebook">Facebook</option>
-                        <option value="TikTok">TikTok</option>
-                        <option value="LinkedIn">LinkedIn</option>
-                        <option value="Word of mouth">Word of mouth</option>
-                        <option value="Other">Other</option>
-                      </select>
-                      <span
-                        id="mce-FROM-HELPERTEXT"
-                        className="helper_text"
-                      ></span>
-                    </div>
-                    <div className="mc-field-group">
-                      <label htmlFor="mce-SERVICE">
-                        I need you service for{" "}
-                      </label>
-                      <input
-                        type="text"
-                        name="SERVICE"
-                        className=""
-                        id="mce-SERVICE"
-                      />
-                      <span
-                        id="mce-SERVICE-HELPERTEXT"
-                        className="helper_text"
-                      ></span>
-                    </div>
-                    <div className="mc-field-group">
-                      <label htmlFor="mce-PROJECT">Here is my project </label>
-                      <div
-                        className="text-box-form"
-                        role="textbox"
-                        aria-label="project description"
-                      ></div>
-                      <input
-                        type="text"
-                        name="PROJECT"
-                        className=""
-                        id="mce-PROJECT"
-                      />
-                      <span
-                        id="mce-PROJECT-HELPERTEXT"
-                        className="helper_text"
-                      ></span>
-                    </div>
-                    <div className="optionalParent">
-                      <div className="clear foot">
+                      <div>
+                        <label htmlFor="NAME">I’m </label>
+                        <input type="text" name="NAME" id="NAME" />
+                        <span id="mce-NAME-HELPERTEXT"></span>
+                      </div>
+                      <div className="mc-field-group">
+                        <label htmlFor="mce-EMAIL">Here is my email</label>
                         <input
-                          type="submit"
-                          name="submit"
-                          id="mc-embedded-subscribe"
-                          className="btnSubmit"
+                          type="email"
+                          name="EMAIL"
+                          id="mce-EMAIL"
+                          required
                         />
+                        <span
+                          id="mce-EMAIL-HELPERTEXT"
+                          className="helper_text"
+                        ></span>
+                      </div>
+                      <div className="mc-field-group">
+                        <label htmlFor="mce-FROM">
+                          I heard about Hana Sachiko{" "}
+                        </label>
+                        <select name="FROM" className="" id="mce-FROM">
+                          <option></option>
+                          <option value="Instagram">Instagram</option>
+                          <option value="Facebook">Facebook</option>
+                          <option value="TikTok">TikTok</option>
+                          <option value="LinkedIn">LinkedIn</option>
+                          <option value="Word of mouth">Word of mouth</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        <span
+                          id="mce-FROM-HELPERTEXT"
+                          className="helper_text"
+                        ></span>
+                      </div>
+                      <div className="mc-field-group">
+                        <label htmlFor="mce-SERVICE">
+                          I need you service for{" "}
+                        </label>
+                        <input
+                          type="text"
+                          name="SERVICE"
+                          className=""
+                          id="mce-SERVICE"
+                        />
+                        <span
+                          id="mce-SERVICE-HELPERTEXT"
+                          className="helper_text"
+                        ></span>
+                      </div>
+                      <div className="mc-field-group">
+                        <label htmlFor="mce-PROJECT">Here is my project </label>
+                        <div
+                          className="text-box-form"
+                          role="textbox"
+                          aria-label="project description"
+                        ></div>
+                        <input
+                          type="text"
+                          name="PROJECT"
+                          className=""
+                          id="mce-PROJECT"
+                        />
+                        <span
+                          id="mce-PROJECT-HELPERTEXT"
+                          className="helper_text"
+                        ></span>
+                      </div>
+                      <div className="optionalParent">
+                        <div className="clear foot">
+                          <input
+                            type="submit"
+                            name="submit"
+                            id="mc-embedded-subscribe"
+                            className="btnSubmit"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </form>
-              )}
+                  </form>
+                )}
             </div>{" "}
           </div>
         </div>

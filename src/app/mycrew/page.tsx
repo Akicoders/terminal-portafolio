@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react"
 import Sidebar from "../../components/sideBar"
 import Image from "next/image"
 import "./style.css"
-import PageTransition from "@/src/components/layout/PageTransition"
+import PageTransition from "../../components/layout/PageTransition"
 import * as THREE from "three"
 import { gsap } from "gsap";
 
@@ -44,7 +44,7 @@ const TeamPage = ({ }) => {
           }
         })
       },
-      { threshold: 0.2 } 
+      { threshold: 0.2 }
     )
 
     observer.observe(container)
@@ -78,7 +78,7 @@ const TeamPage = ({ }) => {
           }
         })
       },
-      { threshold: 0.2 } 
+      { threshold: 0.2 }
     )
 
     observer.observe(container2)
