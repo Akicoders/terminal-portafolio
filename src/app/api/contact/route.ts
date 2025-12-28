@@ -20,8 +20,8 @@ export async function POST(req: NextRequest) {
     const { name, email, subject, message } = await req.json()
 
     await resend.emails.send({
-      // Using Resend's test domain (no custom domain required)
-      from: "Portfolio Contact <onboarding@resend.dev>",
+      // Using your verified domain
+      from: "Portfolio <contact@akicoders.site>",
       // Must be YOUR verified email (Resend free tier limitation)
       to: YOUR_EMAIL,
       subject: `[Portfolio] ${subject || 'New message'} from ${name}`,
