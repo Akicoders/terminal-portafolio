@@ -10,6 +10,54 @@ const config = new Configuration({
 })
 const openai = new OpenAIApi(config)
 
+// Filter out the LEAD marker from the stream
+function filterLeadMarker(stream: ReadableStream): ReadableStream {
+  const decoder = new TextDecoder()
+  const encoder = new TextEncoder()
+  let buffer = ''
+
+  return new ReadableStream({
+    async start(controller) {
+      const reader = stream.getReader()
+
+      try {
+        while (true) {
+          const { done, value } = await reader.read()
+
+          if (done) {
+            // Process any remaining buffer (filter LEAD marker)
+            const filtered = buffer.replace(/<!--LEAD:\{[\s\S]*?\}-->/g, '')
+            if (filtered) {
+              controller.enqueue(encoder.encode(filtered))
+            }
+            controller.close()
+            break
+          }
+
+          buffer += decoder.decode(value, { stream: true })
+
+          // Check if we might have a partial LEAD marker
+          const leadStart = buffer.indexOf('<!--LEAD:')
+
+          if (leadStart === -1) {
+            // No LEAD marker, safe to output
+            controller.enqueue(encoder.encode(buffer))
+            buffer = ''
+          } else if (buffer.includes('-->')) {
+            // Complete LEAD marker found, filter it out
+            const filtered = buffer.replace(/<!--LEAD:\{[\s\S]*?\}-->/g, '')
+            controller.enqueue(encoder.encode(filtered))
+            buffer = ''
+          }
+          // If partial LEAD marker, keep buffering
+        }
+      } catch (err) {
+        controller.error(err)
+      }
+    }
+  })
+}
+
 export async function POST(request: Request) {
   try {
     const { messages } = await request.json()
@@ -83,7 +131,7 @@ CONTACT: josepaulcamposterrones@gmail.com | GitHub: @Akicoders`,
 
     // Callback to process the full response when streaming completes
     const onCompletion = async (completion: string) => {
-      // Check for LEAD marker in the response (using [\s\S] for ES2017 compat instead of 's' flag)
+      // Check for LEAD marker in the response
       const leadMatch = completion.match(/<!--LEAD:(\{[\s\S]*?\})-->/)
 
       if (leadMatch) {
@@ -109,8 +157,10 @@ CONTACT: josepaulcamposterrones@gmail.com | GitHub: @Akicoders`,
 
     const stream = await OpenAIStream(response, { onCompletion })
 
+    // Filter out the LEAD marker before sending to client
+    const filteredStream = filterLeadMarker(stream)
 
-    return new StreamingTextResponse(stream)
+    return new StreamingTextResponse(filteredStream)
   } catch (err) {
 
     return new Response(

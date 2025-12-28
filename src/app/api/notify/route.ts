@@ -14,52 +14,62 @@ export async function POST(request: NextRequest) {
     try {
         const data: NotificationPayload = await request.json()
 
-        const pushoverToken = process.env.PUSHOVER_TOKEN
-        const pushoverUser = process.env.PUSHOVER_USER
+        const resendApiKey = process.env.RESEND_API_KEY
 
-        if (!pushoverToken || !pushoverUser) {
-            console.log('Pushover not configured. Lead data:', data)
+        if (!resendApiKey) {
+            console.log('Resend not configured. Lead data:', data)
             return NextResponse.json({
                 success: true,
                 message: 'Lead recorded (notifications not configured)'
             })
         }
 
-        // Build notification message
+        // Build notification email
         const serviceSuggestions = data.services?.length
-            ? `\n\n🎯 Servicios sugeridos:\n${data.services.map(s => `• ${s}`).join('\n')}`
+            ? `<h3>🎯 Servicios sugeridos:</h3><ul>${data.services.map(s => `<li>${s}</li>`).join('')}</ul>`
             : ''
 
-        const message = `🔔 NUEVO LEAD DEL PORTFOLIO
+        const htmlContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h1 style="color: #00B4D8;">🔔 NUEVO LEAD DEL PORTFOLIO</h1>
+            
+            <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <p><strong>👤 Nombre:</strong> ${data.name || 'No proporcionado'}</p>
+                <p><strong>📱 WhatsApp:</strong> <a href="https://wa.me/${data.phone.replace(/[^0-9]/g, '')}">${data.phone}</a></p>
+                <p><strong>🏢 Empresa:</strong> ${data.company || 'No proporcionada'}</p>
+            </div>
+            
+            <h3>📝 Resumen de la conversación:</h3>
+            <p style="background: #e8f4f8; padding: 15px; border-left: 4px solid #00B4D8; border-radius: 4px;">
+                ${data.summary}
+            </p>
+            
+            ${serviceSuggestions}
+            
+            <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;" />
+            <p style="color: #888; font-size: 12px;">
+                Enviado desde: JP Campos Portfolio - akicoders.site
+            </p>
+        </div>
+        `
 
-👤 Nombre: ${data.name || 'No proporcionado'}
-📱 WhatsApp: ${data.phone}
-🏢 Empresa: ${data.company || 'No proporcionada'}
-
-📝 Resumen de la conversación:
-${data.summary}${serviceSuggestions}
-
----
-Enviado desde: JP Campos Portfolio`
-
-        // Send to Pushover
-        const pushoverResponse = await fetch('https://api.pushover.net/1/messages.json', {
+        // Send email via Resend
+        const resendResponse = await fetch('https://api.resend.com/emails', {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${resendApiKey}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                token: pushoverToken,
-                user: pushoverUser,
-                message: message,
-                title: '🚀 Nuevo Lead - Portfolio',
-                priority: 1, // High priority
-                sound: 'cashregister',
+                from: 'Portfolio Leads <leads@akicoders.site>',
+                to: 'josepaulcamposterrones@gmail.com',
+                subject: `🚀 Nuevo Lead: ${data.name || 'Visitante'} - ${data.phone}`,
+                html: htmlContent,
             }),
         })
 
-        if (!pushoverResponse.ok) {
-            console.error('Pushover API error:', await pushoverResponse.text())
+        if (!resendResponse.ok) {
+            console.error('Resend API error:', await resendResponse.text())
             return NextResponse.json({
                 success: false,
                 error: 'Failed to send notification'
