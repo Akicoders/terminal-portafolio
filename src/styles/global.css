@@ -3,20 +3,20 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'CourierPrime-Regular';
+  font-family: "CourierPrime-Regular";
   src: url(/assets/fonts/CourierPrime-Regular.ttf);
 }
 
 @font-face {
-  font-family: 'Technor-Variable';
+  font-family: "Technor-Variable";
   src: url(/assets/fonts/Technor-Variable.ttf);
 }
 
 html,
 body,
-body>div:first-child,
+body > div:first-child,
 div#__next,
-div#__next>div {
+div#__next > div {
   height: 100%;
   overflow: auto;
   min-height: -moz-available;
@@ -25,7 +25,6 @@ div#__next>div {
 
 .relative.z-0.flex.h-full.w-full.overflow-hidden.overflow-y-scroll {
   scrollbar-width: none;
-
 }
 
 ::-webkit-scrollbar {
@@ -43,9 +42,7 @@ a {
 
 .scrollbar-trigger {
   scrollbar-width: none;
-
 }
-
 
 /* 
 SideBar
@@ -53,17 +50,17 @@ SideBar
 
 :root {
   /* Brand colors */
-  --color-celeste: #00B4D8;
-  --color-celeste-light: #90E0EF;
-  --color-celeste-dark: #0077B6;
-  --color-accent: #00D9FF;
+  --color-celeste: #00b4d8;
+  --color-celeste-light: #90e0ef;
+  --color-celeste-dark: #0077b6;
+  --color-accent: #00d9ff;
   --color-pink: #f1a7ce;
 
   /* Theme colors - Dark mode (default) */
   --theme-bg: #000000;
   --theme-bg-secondary: #0a0a0a;
   --theme-fg: #ffffff;
-  --theme-fg-secondary: #ECECF1;
+  --theme-fg-secondary: #ececf1;
   --theme-muted: #9e9e9e;
   --theme-border: #ffffff;
   --theme-border-subtle: #333333;
@@ -88,7 +85,7 @@ SideBar
   --theme-muted: #666666;
   --theme-border: #333333;
   --theme-border-subtle: #e0e0e0;
-  --color-celeste: #0077B6;
+  --color-celeste: #0077b6;
   --color-accent: #0096c7;
   --color-pink: #d4447e;
 
@@ -109,9 +106,9 @@ SideBar
   color: var(--text-primary) !important;
 }
 
-[data-theme="light"] body>div:first-child,
+[data-theme="light"] body > div:first-child,
 [data-theme="light"] div#__next,
-[data-theme="light"] div#__next>div {
+[data-theme="light"] div#__next > div {
   background-color: var(--bg-primary) !important;
 }
 
@@ -242,35 +239,15 @@ SideBar
   color: var(--text-primary);
 }
 
-/* Light mode - Scanlines DISABLED (Solution 1) */
-[data-theme="light"] .scanlines::before {
-  display: none;
-}
-
-[data-theme="light"] .scanlines::after {
-  display: none;
-}
-
-/* Light mode - Matrix rain DISABLED */
-[data-theme="light"] .matrix-rain {
-  display: none !important;
-}
-
-[data-theme="light"] .matrix-column {
-  display: none !important;
-}
-
 /* Light mode - Links */
 [data-theme="light"] a {
   color: var(--color-celeste);
 }
 
 [data-theme="light"] .itemMenu:hover {
-  text-shadow: 0 0 4px var(--color-celeste);
 }
 
 [data-theme="light"] .activeLink {
-  text-shadow: 0 0 4px var(--color-celeste);
 }
 
 #brand {
@@ -284,12 +261,14 @@ SideBar
 
 #modal {
   background: #000;
-  border: 1px solid #ECECF1;
+  border: 1px solid #ececf1;
 }
 
 .itemMenu {
-  animation: entry .8s ease;
+  animation: entry 0.8s ease;
+}
 
+.activeLink {
 }
 
 .itemMenu:hover {
@@ -318,14 +297,14 @@ SideBar
   top: 0;
   background-color: #000;
   padding: 24px;
-  color: #ECECF1;
-  font-family: 'Technor-Variable';
+  color: #ececf1;
+  font-family: "Technor-Variable";
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
 
 .sidebar div {
-  font-family: 'Technor-Variable';
+  font-family: "Technor-Variable";
   font-weight: 400;
 }
 
@@ -338,9 +317,13 @@ SideBar
 }
 
 .ring-1 {
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) #ffffff80;
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+    var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+    calc(1px + var(--tw-ring-offset-width)) #ffffff80;
+  box-shadow:
+    var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+    var(--tw-shadow, 0 0 #0000);
 }
 
 .mobile-toggle {
@@ -372,13 +355,13 @@ Main terminal screen
 }
 
 .terminal {
-  font-family: 'CourierPrime-Regular';
+  font-family: "CourierPrime-Regular";
 }
 
 .confirmation-dialog {
-  font-family: 'CourierPrime-Regular';
+  font-family: "CourierPrime-Regular";
   text-align: center;
-  background-color: #ECECEC;
+  background-color: #ececec;
   padding: 1rem 2rem;
   color: #414141;
   border: 1px solid #414141;
@@ -394,7 +377,7 @@ Main terminal screen
 .confirmation-dialog button {
   border: 1px solid #414141;
   padding: 0.1rem 1.5rem;
-  box-shadow: .5px .5px 2px #414141;
+  box-shadow: 0.5px 0.5px 2px #414141;
 }
 
 form {
@@ -402,28 +385,25 @@ form {
 }
 
 .lyrartTitle {
-  text-shadow: 0 0 4px #fff;
 }
 
 .response {
-  font-family: 'Technor-Variable';
-  letter-spacing: .8px;
+  font-family: "Technor-Variable";
+  letter-spacing: 0.8px;
   font-weight: bold;
-
 }
 
 #light:hover {
-  cursor: url('/minecurso.png'), auto;
+  cursor: url("/minecurso.png"), auto;
 }
 
 .play {
   cursor: crosshair;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .play:hover {
   text-decoration: underline;
-
 }
 
 @keyframes size {
@@ -468,7 +448,6 @@ form {
 .fond {
   background-color: #000;
 }
-
 
 /* 
 MediaQuery General
@@ -520,7 +499,6 @@ MediaQuery General
   .lyrartTitle {
     display: none;
   }
-
 }
 
 /* ===========================================
@@ -585,14 +563,14 @@ MediaQuery General
   } */
 }
 
-@media (max-width : 1280px) {
+@media (max-width: 1280px) {
   .noise {
     display: none;
   }
 }
 
 .revealText {
-  animation: entry .4s ease;
+  animation: entry 0.4s ease;
 }
 
 /* @media (max-width: 1439px){
@@ -616,7 +594,6 @@ MediaQuery General
   to {
     transform: translate(0px, 0px);
     rotate: 0deg;
-
   }
 }
 
@@ -648,7 +625,7 @@ MediaQuery General
 }
 
 .lyrart {
-  font-family: 'CourierPrime-Regular', monospace;
+  font-family: "CourierPrime-Regular", monospace;
   font-size: 9px !important;
   line-height: 1.15 !important;
   white-space: pre !important;
@@ -658,140 +635,18 @@ MediaQuery General
 }
 
 .lyrartTitle {
-  font-family: 'CourierPrime-Regular', monospace;
+  font-family: "CourierPrime-Regular", monospace;
   font-size: 12px;
   line-height: 1.2;
   letter-spacing: 1px;
   display: block;
   margin-bottom: 24px;
-  text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
-  animation: glitch 3s infinite;
 }
 
 .system {
   vertical-align: top;
   padding-left: 30px;
   border-left: 2px solid var(--color-celeste);
-}
-
-/* ===========================================
-   GLITCH EFFECT ANIMATION
-   =========================================== */
-@keyframes glitch {
-
-  0%,
-  90%,
-  100% {
-    transform: translate(0);
-    text-shadow: 0 0 10px currentColor;
-  }
-
-  92% {
-    transform: translate(-2px, 1px);
-    text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff;
-  }
-
-  94% {
-    transform: translate(2px, -1px);
-    text-shadow: -2px 0 #ff00ff, 2px 0 #00ffff;
-  }
-
-  96% {
-    transform: translate(-1px, 2px);
-    text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff;
-  }
-
-  98% {
-    transform: translate(1px, -2px);
-    text-shadow: -2px 0 #00ffff, 2px 0 #ff00ff;
-  }
-}
-
-.glitch-text {
-  animation: glitch 2s infinite;
-}
-
-/* ===========================================
-   SCANLINES CRT EFFECT
-   =========================================== */
-.scanlines::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 9999;
-  background: repeating-linear-gradient(0deg,
-      rgba(0, 0, 0, 0.4),
-      rgba(0, 0, 0, 0.4) 1px,
-      transparent 1px,
-      transparent 3px);
-  opacity: 0.6;
-  animation: scanlines-move 10s linear infinite;
-}
-
-@keyframes scanlines-move {
-  0% {
-    background-position: 0 0;
-  }
-
-  100% {
-    background-position: 0 100px;
-  }
-}
-
-.scanlines::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 9998;
-  background: radial-gradient(ellipse at center,
-      transparent 0%,
-      rgba(0, 0, 0, 0.4) 100%);
-}
-
-/* ===========================================
-   MATRIX RAIN EFFECT
-   =========================================== */
-.matrix-rain {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-  background: transparent;
-}
-
-.matrix-column {
-  position: absolute;
-  top: -100%;
-  font-family: 'CourierPrime-Regular', monospace;
-  font-size: 16px;
-  color: #00ff41;
-  text-shadow: 0 0 8px #00ff41, 0 0 15px #00ff41;
-  animation: matrix-fall linear infinite;
-  opacity: 0.4;
-  white-space: pre;
-  line-height: 1.2;
-}
-
-@keyframes matrix-fall {
-  0% {
-    transform: translateY(-100%);
-  }
-
-  100% {
-    transform: translateY(100vh);
-  }
 }
 
 /* ===========================================
@@ -802,7 +657,6 @@ MediaQuery General
 }
 
 @keyframes blink {
-
   0%,
   50% {
     opacity: 1;
@@ -820,7 +674,6 @@ MediaQuery General
 }
 
 @keyframes smooth-blink {
-
   0%,
   100% {
     opacity: 1;
@@ -860,7 +713,6 @@ MediaQuery General
 
 .command-highlight:hover {
   color: var(--color-accent) !important;
-  text-shadow: 0 0 8px var(--color-accent), 0 0 15px var(--color-accent);
   transform: translateX(5px);
 }
 
@@ -878,42 +730,6 @@ MediaQuery General
 .help-command:hover {
   background: rgba(0, 180, 216, 0.2);
   border-color: var(--color-celeste);
-  text-shadow: 0 0 5px var(--color-celeste);
-}
-
-/* ===========================================
-   TERMINAL SCREEN FLICKER (Subtle)
-   =========================================== */
-@keyframes screen-flicker {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  92% {
-    opacity: 1;
-  }
-
-  93% {
-    opacity: 0.8;
-  }
-
-  94% {
-    opacity: 1;
-  }
-
-  97% {
-    opacity: 0.9;
-  }
-
-  98% {
-    opacity: 1;
-  }
-}
-
-.terminal-flicker {
-  animation: screen-flicker 8s infinite;
 }
 
 /* ===========================================
@@ -956,7 +772,10 @@ MediaQuery General
 
 @media (max-width: 760px) {
   .sidebar {
-    transition: width 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+    transition:
+      width 0.3s ease,
+      padding 0.3s ease,
+      opacity 0.3s ease;
   }
 
   .sidebar-hidden {
@@ -988,7 +807,6 @@ MediaQuery General
     font-weight: bold;
     text-align: center;
     margin-bottom: 16px;
-    text-shadow: 0 0 10px currentColor;
   }
 
   .system {

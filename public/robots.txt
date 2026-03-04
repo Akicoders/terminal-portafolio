@@ -1,3 +1,15 @@
+# https://jpcampos.dev Robots.txt
 User-agent: *
-Disallow:
-Disallow: /cgi-bin/
+Allow: /
+
+# Block internal paths
+Disallow: /api/
+Disallow: /_next/
+Disallow: /*.json$
+Disallow: /*.map$
+
+# Sitemap
+Sitemap: https://jpcampos.dev/sitemap.xml
+
+# Crawl-delay (optional, be nice to servers)
+Crawl-delay: 1
