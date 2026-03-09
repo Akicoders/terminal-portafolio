@@ -13,7 +13,7 @@ const IndexPage = ({}) => {
 
 
   return (
-    <>
+    <div className="flex w-full h-screen overflow-hidden">
       <Sidebar />
       <Layout>
         <div
@@ -24,7 +24,7 @@ const IndexPage = ({}) => {
           <ChatComponent inputRef={inputRef} containerRef={containerRef} />
         </div>
       </Layout>
-    </>
+    </div>
   )
 }
 

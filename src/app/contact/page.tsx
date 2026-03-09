@@ -38,7 +38,7 @@ const ContactPage = () => {
   }
 
   return (
-    <>
+    <div className="flex w-full h-screen overflow-hidden">
       <Sidebar />
       <Layout>
         <div className="h-full overflow-y-auto p-6">
@@ -137,6 +137,7 @@ const ContactPage = () => {
                   href="https://github.com/Akicoders"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="GitHub - Visitar perfil de GitHub"
                   className="block text-cyan-400 hover:underline"
                 >
                   GitHub
@@ -145,6 +146,7 @@ const ContactPage = () => {
                   href="https://linkedin.com/in/paulct-dev"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="LinkedIn - Visitar perfil de LinkedIn"
                   className="block text-cyan-400 hover:underline"
                 >
                   LinkedIn
@@ -153,6 +155,7 @@ const ContactPage = () => {
                   href="https://instagram.com/paul04_ct"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Instagram - Visitar perfil de Instagram"
                   className="block text-cyan-400 hover:underline"
                 >
                   Instagram
@@ -162,7 +165,7 @@ const ContactPage = () => {
           </div>
         </div>
       </Layout>
-    </>
+    </div>
   )
 }
 

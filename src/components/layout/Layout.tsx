@@ -80,13 +80,13 @@ const Layout: React.FC<Props> = ({ children }) => {
 
   return (
     <div
-      className="terminal relative flex h-full max-w-full flex-1 flex-col overflow-hidden"
+      className="terminal relative flex-1 h-full overflow-hidden"
       style={{
         color: fgColor,
       }}
     >
       <main
-        className="w-full h-full p-2"
+        className="w-full h-full p-4 overflow-auto"
         style={{
           background: bgColor,
         }}

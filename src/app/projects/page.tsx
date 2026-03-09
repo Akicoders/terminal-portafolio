@@ -39,7 +39,7 @@ const ProjectsPage = () => {
   ]
 
   return (
-    <>
+    <div className="flex w-full h-screen overflow-hidden">
       <Sidebar />
       <Layout>
         <div className="h-full overflow-y-auto p-6">
@@ -91,7 +91,7 @@ const ProjectsPage = () => {
           </div>
         </div>
       </Layout>
-    </>
+    </div>
   )
 }
 

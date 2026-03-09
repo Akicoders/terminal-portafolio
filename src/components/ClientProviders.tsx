@@ -11,7 +11,7 @@ import {SpeedInsights} from "@vercel/speed-insights/next"
 const ClientProviders = ({children}: {children: React.ReactNode}) => {
   return (
     <>
-      <div className="relative z-0 flex h-full w-full overflow-hidden overflow-y-scroll">
+      <div className="relative z-0 flex w-full min-h-screen">
         <AppearanceProvider>
           <I18nProvider>
             <ThemeProvider>

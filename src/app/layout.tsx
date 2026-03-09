@@ -7,7 +7,8 @@ import Script from "next/script"
 // ══════════════════════════════════════════════════════════════
 // SEO CONSTANTS - Tu información real
 // ══════════════════════════════════════════════════════════════
-const SITE_URL = "https://jpcampos.dev"
+const SITE_URL = "https://jp-campos.vercel.app"
+const SITE_URL_ALT = "https://akicoders.site"
 const FULL_NAME = "Jose Paul Campos Terrones"
 const SHORT_NAME = "JP Campos"
 const EMAIL = "josepaulcamposterrones@gmail.com"
@@ -18,7 +19,7 @@ const THEME_COLOR = "#00B4D8"
 // ══════════════════════════════════════════════════════════════
 // Next.js Metadata API (Server-side rendered)
 // ══════════════════════════════════════════════════════════════
-export const metadata: Metadata = {
+const baseMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 
   // ── Título global con template ──
@@ -226,6 +227,123 @@ export const viewport: Viewport = {
 }
 
 // ══════════════════════════════════════════════════════════════
+// Generate Metadata dinámico por página
+// ══════════════════════════════════════════════════════════════
+import {headers} from "next/headers"
+
+export async function generateMetadata() {
+  const headersList = await headers()
+  const pathname = headersList.get("x pathname") || "/"
+  
+  // Metadata base
+  const baseMetadata = {
+    metadataBase: new URL(SITE_URL),
+    alternates: {
+      canonical: SITE_URL,
+      languages: {
+        es: SITE_URL,
+        en: `${SITE_URL}?lang=en`,
+        "x-default": SITE_URL,
+      },
+    },
+    openGraph: {
+      type: "website",
+      locale: "es_PE",
+      alternateLocale: ["en_US", "es_ES"],
+      url: SITE_URL,
+      siteName: `${SHORT_NAME} Portfolio`,
+      images: [
+        {
+          url: `${SITE_URL}/og-image.png`,
+          width: 1200,
+          height: 630,
+          alt: `${FULL_NAME} - ${JOB_TITLE} - Portfolio`,
+          type: "image/png",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: [`${SITE_URL}/og-image.png`],
+      creator: "@paul04_ct",
+    },
+  }
+  
+  // Metadata específica por ruta
+  const pageMetadata: Record<string, Partial<Metadata>> = {
+    "/": {
+      title: `${SHORT_NAME} | ${JOB_TITLE}`,
+      description: DESCRIPTION,
+      openGraph: {
+        title: `${FULL_NAME} — ${JOB_TITLE}`,
+        description: DESCRIPTION,
+      },
+      twitter: {
+        title: `${FULL_NAME} — ${JOB_TITLE}`,
+        description: DESCRIPTION,
+      },
+    },
+    "/me": {
+      title: "Sobre Mí | JP Campos",
+      description: "Conoce más sobre Jose Paul Campos Terrones, Fullstack Developer y AI Specialist. Descubre su experiencia, trayectoria y pasión por la tecnología.",
+      openGraph: {
+        title: "Sobre Mí | JP Campos",
+        description: "Conoce más sobre Jose Paul Campos Terrones, Fullstack Developer y AI Specialist.",
+      },
+      twitter: {
+        title: "Sobre Mí | JP Campos",
+        description: "Conoce más sobre Jose Paul Campos Terrones, Fullstack Developer y AI Specialist.",
+      },
+    },
+    "/skills": {
+      title: "Skills & Tecnologías | JP Campos",
+      description: "Explora las tecnologías y habilidades de Jose Paul Campos: React, Next.js, Python, AI, LangChain, N8N, y más.",
+      openGraph: {
+        title: "Skills & Tecnologías | JP Campos",
+        description: "Explora las tecnologías y habilidades de Jose Paul Campos.",
+      },
+      twitter: {
+        title: "Skills & Tecnologías | JP Campos",
+        description: "Explora las tecnologías y habilidades de Jose Paul Campos.",
+      },
+    },
+    "/projects": {
+      title: "Proyectos | JP Campos",
+      description: "Explora los proyectos de desarrollo web, IA y automatización de Jose Paul Campos. portafolio interactivo con terminal.",
+      openGraph: {
+        title: "Proyectos | JP Campos",
+        description: "Explora los proyectos de Jose Paul Campos.",
+      },
+      twitter: {
+        title: "Proyectos | JP Campos",
+        description: "Explora los proyectos de Jose Paul Campos.",
+      },
+    },
+    "/contact": {
+      title: "Contacto | JP Campos",
+      description: "Contácta a Jose Paul Campos para proyectos de desarrollo web, IA o automatización. Email: josepaulcamposterrones@gmail.com",
+      openGraph: {
+        title: "Contacto | JP Campos",
+        description: "Contácta a Jose Paul Campos para proyectos de desarrollo.",
+      },
+      twitter: {
+        title: "Contacto | JP Campos",
+        description: "Contácta a Jose Paul Campos para proyectos.",
+      },
+    },
+  }
+  
+  // Obtener metadata para la ruta actual o usar default
+  const pageKey = Object.keys(pageMetadata).find(key => pathname === key || pathname.startsWith(key + "/")) || "/"
+  const customMetadata = pageMetadata[pageKey] || pageMetadata["/"]
+  
+  return {
+    ...baseMetadata,
+    ...customMetadata,
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
 // JSON-LD Structured Data (Multiple schemas for max SEO)
 // ══════════════════════════════════════════════════════════════
 const personSchema = {
@@ -265,7 +383,7 @@ const personSchema = {
     "Ingeniero de IA",
   ],
   email: `mailto:${EMAIL}`,
-  telephone: "+51XXXXXXXXX", // Agrega tu número si deseas
+  // telephone eliminado del Schema para privacidad
   address: {
     "@type": "PostalAddress",
     addressLocality: "Lima",
@@ -593,11 +711,36 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           crossOrigin="anonymous"
         />
 
+        {/* Preload critical fonts */}
+        <link
+          rel="preload"
+          href="/assets/fonts/CourierPrime-Regular.ttf"
+          as="font"
+          type="font/ttf"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/assets/fonts/Technor-Variable.ttf"
+          as="font"
+          type="font/ttf"
+          crossOrigin="anonymous"
+        />
+
         {/* DNS Prefetch for APIs */}
         <link rel="dns-prefetch" href="https://api.github.com" />
       </head>
-      <body suppressHydrationWarning={true}>
-        <ClientProviders>{children}</ClientProviders>
+      <body suppressHydrationWarning={true} className="w-full min-h-screen m-0 p-0">
+        {/* Skip Link para accesibilidad */}
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
+        
+        <ClientProviders>
+          <main id="main-content" className="w-full min-h-screen">
+            {children}
+          </main>
+        </ClientProviders>
       </body>
     </html>
   )

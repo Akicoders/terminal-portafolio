@@ -1,4 +1,4 @@
-# https://jpcampos.dev Robots.txt
+# Robots.txt for jp-campos.vercel.app & akicoders.site
 User-agent: *
 Allow: /
 
@@ -8,8 +8,9 @@ Disallow: /_next/
 Disallow: /*.json$
 Disallow: /*.map$
 
-# Sitemap
-Sitemap: https://jpcampos.dev/sitemap.xml
+# Sitemaps
+Sitemap: https://jp-campos.vercel.app/sitemap.xml
+Sitemap: https://akicoders.site/sitemap.xml
 
 # Crawl-delay (optional, be nice to servers)
 Crawl-delay: 1

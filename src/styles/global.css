@@ -2,6 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ══════════════════════════════════════════════════════════════
+   ACCESIBILITY - Skip Link
+   ══════════════════════════════════════════════════════════════ */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-celeste);
+  color: white;
+  padding: 8px 16px;
+  z-index: 9999;
+  transition: top 0.3s ease;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 4px 0;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* Focus visible para accesibilidad */
+:focus-visible {
+  outline: 2px solid var(--color-celeste);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-celeste);
+  outline-offset: 2px;
+}
+
 @font-face {
   font-family: "CourierPrime-Regular";
   src: url(/assets/fonts/CourierPrime-Regular.ttf);
@@ -290,17 +327,24 @@ SideBar
 }
 
 .sidebar {
-  z-index: 1000;
-  width: 250px;
-  height: auto;
-  min-height: 100vh;
-  top: 0;
+  width: 280px;
+  min-width: 280px;
+  height: 100vh;
   background-color: #000;
   padding: 24px;
   color: #ececf1;
   font-family: "Technor-Variable";
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+/* Mobile sidebar */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
 }
 
 .sidebar div {
