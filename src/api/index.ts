@@ -1,35 +1,30 @@
-import axios from "axios"
-import config from "../../config.json"
+const REQUEST_TIMEOUT_MS = 10000
 
-export const getProjects = async () => {
-  const { data } = await axios.get(
-    `https://api.github.com/users/${config.social.github}/repos`,
+const fetchWithTimeout = async (input: string, init?: RequestInit) => {
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+
+  try {
+    return await fetch(input, {
+      ...init,
+      signal: controller.signal,
+    })
+  } finally {
+    clearTimeout(timeoutId)
+  }
+}
+
+export const getWeather = async (city: string): Promise<string> => {
+  const response = await fetchWithTimeout(
+    `https://wttr.in/${encodeURIComponent(city)}?ATm`,
+    {
+      cache: "no-store",
+    },
   )
 
-  return data
+  if (!response.ok) {
+    throw new Error("Unable to fetch weather right now")
+  }
+
+  return response.text()
 }
-
-export const getBio = async () => {
-  const { data } = await axios.get(config.bioUrl)
-
-  return data
-}
-
-export const getWeather = async (city: string) => {
-  const { data } = await axios.get(`https://wttr.in/${city}?ATm`)
-
-  return data
-}
-
-// export const getQuote = async () => {
-//   const {data} = await axios.get("https://api.quotable.io/random")
-
-//   return {
-//     quote: `“${data.content}” — ${data.author}`,
-//   }
-// }
-
-export const getQuote = async () => {
-  const { data } = await axios.get("/api/quote");
-  return data;
-};

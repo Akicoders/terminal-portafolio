@@ -1,14 +1,17 @@
-import * as cow from "cowsay-browser"
-import {getQuote} from "../../api"
+const buildBubble = (message: string) => {
+  const content = message.trim() || "moo"
+  const line = "-".repeat(content.length + 2)
+
+  return [` ${line}`, `< ${content} >`, ` ${line}`].join("\n")
+}
 
 export const cowsay = async (args: string[]): Promise<string> => {
-  let output = ""
+  const message = args.join(" ") || "Automatiza lo repetitivo."
 
-  if (args.length < 1 || args[0] === "") {
-    const quote = (await getQuote()).quote
-    return cow.say({text: quote})
-  } else {
-    output = args.join(" ")
-    return cow.say({text: output})
-  }
+  return `${buildBubble(message)}
+        \\\   ^__^
+         \\\  (oo)\\_______
+            (__)\\       )\\/\\
+                ||----w |
+                ||     ||`
 }

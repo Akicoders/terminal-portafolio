@@ -1,95 +1,149 @@
 import packageJson from "../../../package.json"
-import * as bin from "./index"
+import {getStoredLocale, portfolioContent} from "../../content/portfolio"
 
-export const help = async (args: string[]): Promise<string> => {
-  const commands = Object.keys(bin).sort().join(", ")
+const fundingUrl: string =
+  "funding" in packageJson &&
+  packageJson.funding &&
+  typeof packageJson.funding === "object" &&
+  "url" in packageJson.funding
+    ? String(packageJson.funding.url)
+    : "https://github.com/Akicoders"
 
-  return `Available commands:\n${commands}\n\n[tab]\t trigger completion.\n[ctrl+l] clear terminal.\n[ctrl+c] cancel command.`
+const COMMANDS = [
+  "about",
+  "aki",
+  "banner",
+  "blog",
+  "contact",
+  "cowsay",
+  "curiosity",
+  "date",
+  "donate",
+  "echo",
+  "emacs",
+  "email",
+  "enigma",
+  "github",
+  "gui",
+  "help",
+  "impact",
+  "instagram",
+  "linkedin",
+  "neofetch",
+  "projects",
+  "repo",
+  "skills",
+  "snake",
+  "social",
+  "sudo",
+  "theme",
+  "vi",
+  "video",
+  "vim",
+  "weather",
+  "whoami",
+  "youtube",
+]
+
+export const help = async (): Promise<string> => {
+  const locale = getStoredLocale()
+  const copy = portfolioContent[locale]
+
+  return `Available commands:
+${COMMANDS.join(", ")}
+
+${copy.labels.shortcuts}:
+[tab] autocomplete command
+[ctrl+l] clear terminal
+[ctrl+c] cancel current input
+[enter] run command`
 }
 
 export const echo = async (args: string[]): Promise<string> => {
   return args.join(" ")
 }
 
-export const whoami = async (args: string[]): Promise<string> => {
+export const whoami = async (): Promise<string> => {
   return "mystery-visitor"
 }
 
-export const date = async (args: string[]): Promise<string> => {
+export const date = async (): Promise<string> => {
   return new Date().toString()
 }
 
-export const gui = async (args: string[]): Promise<string> => {
-  window.open("https://linkedin.com/in/paulct-dev/", "_self")
-
-  return "Opening LinkedIn profile... 💼"
+export const gui = async (): Promise<string> => {
+  window.open("https://akicoders.site", "_self")
+  return "Opening portfolio GUI..."
 }
 
-export const email = async (args: string[]): Promise<string> => {
-  window.open("mailto:josepaulcamposterrones@gmail.com")
+export const email = async (): Promise<string> => {
+  window.open(
+    "mailto:josepaulcamposterrones@gmail.com",
+    "_blank",
+    "noopener,noreferrer",
+  )
 
-  return "Opening email client... 📧 josepaulcamposterrones@gmail.com"
+  return "Opening email client... josepaulcamposterrones@gmail.com"
 }
 
-export const vi = async (args: string[]): Promise<string> => {
-  return `why use vi? try 'emacs'.`
+export const video = async (): Promise<string> => {
+  window.open(
+    "https://www.youtube.com/results?search_query=jp+campos+ai",
+    "_blank",
+    "noopener,noreferrer",
+  )
+
+  return "Opening featured videos..."
 }
 
-export const vim = async (args: string[]): Promise<string> => {
-  return `why use vim? try 'emacs'.`
+export const vi = async (): Promise<string> => {
+  return "why use vi? try 'emacs'."
 }
 
-export const emacs = async (args?: string[]): Promise<string> => {
-  return `really? emacs? you should be using 'vim'`
+export const vim = async (): Promise<string> => {
+  return "why use vim? try 'emacs'."
+}
+
+export const emacs = async (): Promise<string> => {
+  return "really? emacs? you should be using 'vim'"
 }
 
 export const sudo = async (args?: string[]): Promise<string> => {
-  setTimeout(function () {
-    window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-  }, 1000)
+  setTimeout(() => {
+    window.open(
+      "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "_blank",
+      "noopener,noreferrer",
+    )
+  }, 900)
 
-  if (args) {
+  if (args && args.length > 0) {
     return `Permission denied: unable to run the command '${args[0]}' as root.`
-  } else {
-    return "Permission denied: no command specified."
   }
+
+  return "Permission denied: no command specified."
 }
 
-export const repo = async (args?: string[]): Promise<string> => {
-  setTimeout(function () {
-    window.open("https://github.com/Akicoders", "_blank")
-  }, 1000)
-
-  return "Opening GitHub repositories... 🐙"
+export const repo = async (): Promise<string> => {
+  window.open("https://github.com/Akicoders", "_blank", "noopener,noreferrer")
+  return "Opening GitHub repositories..."
 }
 
-export const donate = async (args?: string[]): Promise<string> => {
-  window.open(packageJson.funding.url, "_blank")
-
+export const donate = async (): Promise<string> => {
+  window.open(fundingUrl, "_blank", "noopener,noreferrer")
   return "Opening donation url..."
 }
 
-export const banner = (args?: string[]): string => {
-  return `
-  ╔═══════════════════════════════════════════════════════════════════╗
-  ║      ██╗██████╗      ██████╗ █████╗ ███╗   ███╗██████╗  ██████╗  ║
-  ║      ██║██╔══██╗    ██╔════╝██╔══██╗████╗ ████║██╔══██╗██╔═══██╗ ║
-  ║      ██║██████╔╝    ██║     ███████║██╔████╔██║██████╔╝██║   ██║ ║
-  ║ ██   ██║██╔═══╝     ██║     ██╔══██║██║╚██╔╝██║██╔═══╝ ██║   ██║ ║
-  ║ ╚█████╔╝██║         ╚██████╗██║  ██║██║ ╚═╝ ██║██║     ╚██████╔╝ ║
-  ║  ╚════╝ ╚═╝          ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝      ╚═════╝  ║
-  ╚═══════════════════════════════════════════════════════════════════╝
-  
-  🚀 Fullstack Developer | AI Specialist | Automation Expert
-  
-  v${packageJson.version}
-  
-  Escribe 'help' para ver los comandos disponibles.
-  Escribe 'about' para conocerme.
-  O simplemente escríbeme algo y hablaremos con Aki 🤖
-  
-   ──────────────────────────────────────────────────────────────────────
-  💡 Tips: 'impact', 'video', 'projects', 'theme', 'neofetch'
-  ──────────────────────────────────────────────────────────────────────
+export const banner = (): string => {
+  const locale = getStoredLocale()
+  const copy = portfolioContent[locale]
+
+  return `JP CAMPOS // ${copy.brand.role}
+v${packageJson.version}
+
+${copy.terminal.bannerLead}
+${copy.terminal.bannerHint}
+
+${copy.labels.terminalHint}
 `
 }

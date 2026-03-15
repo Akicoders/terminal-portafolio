@@ -1,0 +1,35 @@
+{
+  "name": "n8n-mcp-check",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@illuminaresolutions/n8n-mcp-server": "^1.0.1",
+    "bytes": "^3.1.2",
+    "content-type": "^1.0.5",
+    "data-uri-to-buffer": "^4.0.1",
+    "depd": "^2.0.0",
+    "fetch-blob": "^3.2.0",
+    "formdata-polyfill": "^4.0.10",
+    "http-errors": "^2.0.1",
+    "iconv-lite": "^0.7.2",
+    "inherits": "^2.0.4",
+    "node-domexception": "^1.0.0",
+    "node-fetch": "^3.3.2",
+    "raw-body": "^3.0.2",
+    "safer-buffer": "^2.1.2",
+    "setprototypeof": "^1.2.0",
+    "statuses": "^2.0.2",
+    "toidentifier": "^1.0.1",
+    "unpipe": "^1.0.0",
+    "web-streams-polyfill": "^3.3.3",
+    "zod": "^3.25.76"
+  }
+}

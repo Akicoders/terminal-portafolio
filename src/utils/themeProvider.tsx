@@ -1,5 +1,5 @@
 "use client"
-import React, {useEffect, useState} from "react"
+import React, {useCallback, useEffect, useMemo, useState} from "react"
 import Themes from "../../themes.json"
 import {Theme} from "../interfaces/theme"
 import config from "../../config.json"
@@ -26,15 +26,9 @@ export const ThemeProvider: React.FC<Props> = ({children}) => {
     localStorage.setItem("visitedAt", new Date().toString())
   }, [])
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme")
-
-    setTheme(savedTheme || config.theme)
-  }, [])
-
-  const setTheme = (name: string) => {
+  const setTheme = useCallback((name: string) => {
     const index = Themes.findIndex(
-      (colorScheme) => colorScheme.name.toLowerCase() === name,
+      (colorScheme) => colorScheme.name.toLowerCase() === name.toLowerCase(),
     )
 
     if (index === -1) {
@@ -43,14 +37,19 @@ export const ThemeProvider: React.FC<Props> = ({children}) => {
 
     _setTheme(Themes[index])
 
-    localStorage.setItem("theme", name)
+    if (typeof window !== "undefined") {
+      localStorage.setItem("theme", Themes[index].name.toLowerCase())
+    }
 
     return `Theme ${Themes[index].name} set successfully!`
-  }
+  }, [])
 
-  return (
-    <ThemeContext.Provider value={{theme, setTheme}}>
-      {children}
-    </ThemeContext.Provider>
-  )
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme")
+    setTheme(savedTheme || config.theme)
+  }, [setTheme])
+
+  const value = useMemo(() => ({theme, setTheme}), [theme, setTheme])
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }

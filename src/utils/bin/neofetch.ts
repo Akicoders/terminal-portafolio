@@ -1,160 +1,81 @@
-import { formatDistanceToNow } from "date-fns"
 import packageJson from "../../../package.json"
-import themes from "../../../themes.json"
-
-// JP Campos ASCII Art
-const jpCamposArt = `
--------------------------------===-----------------=-====-======--------==+=------------------------
----------------------------===========----=-=-=-===-==-==================+=-------------------------
----------------------------=+========-===--=--=-=-=========+++=========+=---------------------------
------------------------=++++===========-================================----------------------------
-------------------==-=+*+======================+==============+========+=---------------------------
-------------------=++**======================+=========+=======+========++=-------------------------
--------------------+#+==================+=============++==+======+=========+=-----------------------
-----------------=+*#*+============+===++=============-:=+=+==================++#+-------------------
---------------=+###*+===========+===++++==========+=::::==+=+==============+=-----------------------
------------=++***++====++=++=+======++===========+-:::::-==-==============+=+=----------------------
------------=+++++========+=+++==++++=========++==-:::::::-=--==+====++====++=++---------------------
------------+###*+++=============++=========++===---:::::::----==+===+#=====*===+*=------------------
----------=*######+===========++===========+*--=-:::::---::::::--+-===**====+=++++++=----------------
---=+##*########*+++===+=+*+++=+=+====+===++-:--:::::::::-==--::----====+===++++---------------------
----=+##########*#++++++=======++++++===+++-:::--==++==------==-:-:::-=-=+==+++*+--------------------
------==+#########++++#+=========++===+==+-:-:-##+++*#%%#=--::::::::::-:-++=**+=#=-------------------
--------+#########+++*++=++=====+#+==+=-=-:::-:-::::+@@%==::::::::-:-----=+*##+-==-------------------
-------+##########*+++++=+==----##+==-::-::-::::::::=%%%-:::::::::------==+#%#=----------------------
------=*+*#########*++++==+=+++--+*==-:::::::::::-:---=+-::::::::::------=*%%%=----------------------
------===*#########*+++++++++=++=-*+=:-:-::-:-:-::-:---:::::::::::=##%#--+%%=*+----------------------
--------=+##########+++**+---++++-=+=:::-:-::::::-:-:-:-::-:::::::.-%@%*=%*+-------------------------
--------=+##########++++*+--=+++---+-:-::::::-:-:::-::::-::-:::::-:=#%+-+==--------------------------
---------=+###########*+*++--++++--:-:--------------------::-:::-:------=----------------------------
----------=############**#+++--------:------------------------:-:------=-----------------------------
----------+*#############%**#%*----------------------------------------+-----------------------------
----------=+#############%%#%%%%*++=-----------------------------------=-----------------------------
----------=++*##############%%%%#*+*----------------------------------=------------------------------
-------------=+*############@%%%%*+++--------------------------------==------------------------------
----------------+##########%@@%@%=++++=---------------=====---------==-------------------------------
-----------------+#######%%#%%@%++-+++++---------------------=----===--------------------------------
-----------------=*##########%@%----=+++++----------------==--====+=---------------------------------
-----------------=+###########%@=-----++++**=---------------====+=-----------------------------------
-----------------=**############=------=+++****=--------=======+-------------------------------------
----------------=+==+###########+---=---=+********+==-=-=====+=--------------------------------------
--------------------+*##########+---=-----+*******####+====+=----------------------------------------
---------------------=+########*+---=------=+**#***######+==-----------------+++=--------------------
----------------------=+#####+=#*=--==------=+*#*#######++=------------------------=====-------------
-----------------------+###*==##*=--==---=-====+*#######+==-----------------------===-----====-------
-----------------------+###+=****==--=---========+*##*++==+=----------------------++----====---------
---------------------+*###%+==##*======-=========+=======++##=-------------------+====++++++=+-------
------------------=+####%@@+===*+=------=====++=======+++++#@@#=---------------=+---++=+=-=-=--------
------------------+####@@@%======+=========+=========+++++*%@@@@#=-----------===--===+---------------
------------------+#%@@@@@+======++=======+++=======++++++#@@@@@@@@*+=-------------------------------
----------------=#@@@@@@@@======+++=====++==++======+++++*@@@@@@@@@@@@@%#=---------------------------
-`
-
-const jpCamposTitle = `
-     ██╗██████╗      ██████╗ █████╗ ███╗   ███╗██████╗  ██████╗ ███████╗
-     ██║██╔══██╗    ██╔════╝██╔══██╗████╗ ████║██╔══██╗██╔═══██╗██╔════╝
-     ██║██████╔╝    ██║     ███████║██╔████╔██║██████╔╝██║   ██║███████╗
-██   ██║██╔═══╝     ██║     ██╔══██║██║╚██╔╝██║██╔═══╝ ██║   ██║╚════██║
-╚█████╔╝██║         ╚██████╗██║  ██║██║ ╚═╝ ██║██║     ╚██████╔╝███████║
- ╚════╝ ╚═╝          ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝      ╚═════╝ ╚══════╝`
+import {
+  getStoredLocale,
+  getStoredMode,
+  portfolioContent,
+} from "../../content/portfolio"
 
 const getPlatform = (): "Unknown" | "Windows" | "MacOS" | "Linux" => {
-  let os: "Unknown" | "Windows" | "MacOS" | "Linux" = "Unknown"
-
-  if (navigator.userAgent.indexOf("Win") != -1) {
-    os = "Windows"
+  if (navigator.userAgent.includes("Win")) {
+    return "Windows"
   }
 
-  if (navigator.userAgent.indexOf("Mac") != -1) {
-    os = "MacOS"
+  if (navigator.userAgent.includes("Mac")) {
+    return "MacOS"
   }
 
-  if (navigator.userAgent.indexOf("Linux") != -1) {
-    os = "Linux"
+  if (navigator.userAgent.includes("Linux")) {
+    return "Linux"
   }
 
-  return os
+  return "Unknown"
 }
 
-const getMainColor = () => {
-  const platform = getPlatform()
-  const themeName = localStorage.getItem("theme")
-  const theme = themes.find((theme) => theme.name.toLowerCase() === themeName)
+const getUptimeLabel = () => {
+  const visited = localStorage.getItem("visitedAt")
 
-  if (!theme) {
-    return "#00B4D8" // Celeste por defecto
+  if (!visited) {
+    return "just now"
   }
 
-  return theme.cyan ?? "#00B4D8"
-}
-
-const getInfo = () => {
-  const os = getPlatform()
-  const themeName = localStorage.getItem("theme")
-  const theme = themes.find((theme) => theme.name.toLowerCase() === themeName)
-  const visitedAt = new Date(
-    localStorage.getItem("visitedAt") || new Date().toString(),
+  const seconds = Math.max(
+    0,
+    Math.floor((Date.now() - new Date(visited).getTime()) / 1000),
   )
 
-  const skills = [
-    "React, Next.js, Astro, TypeScript",
-    "Python, Node.js, FastAPI",
-    "OpenAI, LangChain, RAG, LLMs",
-    "N8N, Flowise, Automation",
-    "PostgreSQL, MongoDB, Vector DBs",
-  ]
+  if (seconds < 60) {
+    return `${seconds}s`
+  }
 
-  const quotes = [
-    "Cualquier proceso que se repite es automatizable",
-    "La IA es el futuro, y el futuro es ahora",
-    "Código limpio, soluciones brillantes",
-    "Transformando ideas en realidad",
-    "Fullstack Developer | AI Specialist",
-  ]
+  const minutes = Math.floor(seconds / 60)
+  if (minutes < 60) {
+    return `${minutes}m`
+  }
 
-  const mainColor = theme?.cyan ?? "#00B4D8"
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) {
+    return `${hours}h ${minutes % 60}m`
+  }
 
-  let message = ""
-  message += `<span class="lyrartTitle">${jpCamposTitle}\n\n</span>`
-  message += `<span class="lyrartTitle-mobile" style="color: ${mainColor}">⚡ JP CAMPOS ⚡</span>\n`
-  message += `<span style="color: ${mainColor}">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>\n`
-  message += `<span style="color: ${mainColor}">👤 Name</span>: Jose Paul Campos Terrones\n`
-  message += `<span style="color: ${mainColor}">💼 Role</span>: Fullstack Developer | AI Specialist\n`
-  message += `<span style="color: ${mainColor}">🖥️ OS</span>: ${os}\n`
-  message += `<span style="color: ${mainColor}">🎨 Theme</span>: ${themeName}\n`
-  message += `<span style="color: ${mainColor}">📦 Version</span>: ${packageJson.version}\n`
-  message += `<span style="color: ${mainColor}">⏱️ Uptime</span>: ${formatDistanceToNow(visitedAt)}\n`
-  message += `<span style="color: ${mainColor}">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>\n`
-  message += `<span style="color: ${mainColor}">🚀 Skills</span>:\n`
-  skills.forEach(skill => {
-    message += `   • ${skill}\n`
-  })
-  message += `<span style="color: ${mainColor}">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>\n`
-  message += `<span style="color: ${mainColor}">💬 Quote</span>: "${quotes[Math.floor(Math.random() * quotes.length)]}"\n`
-  message += `<span style="color: ${mainColor}">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>\n`
-  message += `<span style="color: ${mainColor}">🔗 Links</span>:\n`
-  message += `   📧 <a href="mailto:josepaulcamposterrones@gmail.com">josepaulcamposterrones@gmail.com</a>\n`
-  message += `   🐙 <a href="https://github.com/Akicoders" target="_blank">github.com/Akicoders</a>\n`
-  message += `   💼 <a href="https://linkedin.com/in/paulct-dev" target="_blank">linkedin.com/in/paulct-dev</a>\n`
-  message += `   📷 <a href="https://instagram.com/paul04_ct" target="_blank">instagram.com/paul04_ct</a>\n`
-
-  return message
+  const days = Math.floor(hours / 24)
+  return `${days}d ${hours % 24}h`
 }
 
-export const neofetch = async (args?: string[]): Promise<string> => {
-  const info = getInfo()
-  const themeName = localStorage.getItem("theme")
-  const theme = themes.find((theme) => theme.name.toLowerCase() === themeName)
-  const mainColor = theme?.cyan ?? "#00B4D8"
+export const neofetch = async (): Promise<string> => {
+  const locale = getStoredLocale()
+  const mode = getStoredMode()
+  const copy = portfolioContent[locale]
+  const themeName = localStorage.getItem("theme") || "homebrew"
 
-  return `
-  <div class="neofetch-container">
-    <table class="neofetch-table">
-      <tr>
-        <td class="lyrart" style="color: ${mainColor};">${jpCamposArt}</td>
-        <td class="system">${info}</td>
-      </tr>
-    </table>
-  </div>
-  `
+  return `JP CAMPOS
+========================================
+Role    : ${copy.brand.role}
+Focus   : AI, automation, product engineering
+OS      : ${getPlatform()}
+Mode    : ${mode}
+Theme   : ${themeName}
+Version : ${packageJson.version}
+Uptime  : ${getUptimeLabel()}
+
+Sections:
+- ${copy.nav.map((item) => item.label).join(" | ")}
+
+Links:
+- Email    : josepaulcamposterrones@gmail.com
+- GitHub   : https://github.com/Akicoders
+- LinkedIn : https://linkedin.com/in/paulct-dev
+- Instagram: https://instagram.com/paul04_ct
+
+Quote:
+"${copy.terminal.neofetchQuote}"`
 }

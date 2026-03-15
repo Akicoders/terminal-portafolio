@@ -25,24 +25,24 @@ Example:
     case "set":
       const selectedTheme = args[1]
 
-      // Check if callback is provided before calling it
+      if (!selectedTheme) {
+        return "Usage: theme set <theme-name>"
+      }
+
       if (callback) {
         return callback(selectedTheme)
-      } else {
-        // Handle the case when callback is not provided
-        return "Callback not provided"
       }
+
+      return "Theme callback is unavailable."
 
     case "random":
       const randomTheme = Themes[Math.floor(Math.random() * Themes.length)]
 
-      // Check if callback is provided before calling it
       if (callback) {
         return callback(randomTheme.name.toLowerCase())
-      } else {
-        // Handle the case when callback is not provided
-        return "Callback not provided"
       }
+
+      return "Theme callback is unavailable."
 
     default:
       return "Invalid argument. Use 'ls', 'set', or 'random'."

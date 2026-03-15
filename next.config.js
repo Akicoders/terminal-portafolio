@@ -1,57 +1,78 @@
-// /**
-//  * @type {import('next').NextConfig}
-//  */
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "object-src 'none'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https:",
+  "font-src 'self' data:",
+  "connect-src 'self' ws: wss: https://wttr.in",
+  "upgrade-insecure-requests",
+].join("; ")
 
-// const nextConfig = {
-//   output: 'export',
-
-//   images: {
-//     unoptimized: true,
-//   },
-
-//   // Optional: Change links `/me` -> `/me/` and emit `/me.html` -> `/me/index.html`
-//   // trailingSlash: true,
-
-//   // Optional: Prevent automatic `/me` -> `/me/`, instead preserve `href`
-//   // skipTrailingSlashRedirect: true,
-
-//   // Optional: Change the output directory `out` -> `dist`
-//   // distDir: 'dist',
-// }
-
-// module.exports = nextConfig
-
-// module.exports = {
-//   assetPrefix: '.',
-// };
-
-const path = require("path");
-
-
-/** @type {import('next').NextConfig} */
+const path = require("path")
 const nextConfig = {
-  webpack: (config, options) => {
-    // 1️⃣ GLSL loader
-    config.module.rules.push({
-      test: /\.(glsl|vs|fs|vert|frag)$/,
-      use: ["raw-loader", "glslify-loader"],
-    });
-
-    // 2️⃣ Forcer une seule instance de Three.js
-    config.resolve.alias = {
-      ...(config.resolve.alias || {}),
-      "three": path.resolve("./node_modules/three"),
-    };
-
-    return config;
-  },
-
-  // Ignore ESLint during builds (Vercel)
+  reactStrictMode: true,
+  poweredByHeader: false,
+  outputFileTracingRoot: path.join(__dirname),
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
-
-  // output: 'export',
-};
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: contentSecurityPolicy,
+          },
+          {
+            key: "Cross-Origin-Embedder-Policy",
+            value: "credentialless",
+          },
+          {
+            key: "Cross-Origin-Opener-Policy",
+            value: "same-origin",
+          },
+          {
+            key: "Cross-Origin-Resource-Policy",
+            value: "same-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-DNS-Prefetch-Control",
+            value: "off",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "X-Permitted-Cross-Domain-Policies",
+            value: "none",
+          },
+        ],
+      },
+    ]
+  },
+}
 
 module.exports = nextConfig

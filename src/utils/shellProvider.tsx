@@ -1,24 +1,25 @@
 "use client"
+
 import React, {useEffect} from "react"
+import config from "../../config.json"
+import {sectionIds} from "../content/portfolio"
 import {History} from "../interfaces/history"
 import * as bin from "./bin"
+import {usePortfolio} from "./portfolioProvider"
+import {useTerminalUi} from "./terminalUiProvider"
 import {useTheme} from "./themeProvider"
 
 interface ShellContextType {
   history: History[]
-  command: string
-  lastCommandIndex: number
-
-  setHistory: (output: string) => void
   setCommand: (command: string) => void
-  setLastCommandIndex: (index: number) => void
-  execute: (command: string) => Promise<void>
   clearHistory: () => void
 }
 
-const ShellContext = React.createContext<ShellContextType>(
-  {} as ShellContextType,
-)
+const ShellContext = React.createContext<ShellContextType>({
+  history: [],
+  setCommand: () => undefined,
+  clearHistory: () => undefined,
+})
 
 interface ShellProviderProps {
   children: React.ReactNode
@@ -27,89 +28,108 @@ interface ShellProviderProps {
 export const useShell = () => React.useContext(ShellContext)
 
 export const ShellProvider: React.FC<ShellProviderProps> = ({children}) => {
-  const [init, setInit] = React.useState(true)
-  const [history, _setHistory] = React.useState<History[]>([])
-  const [command, _setCommand] = React.useState<string>("")
-  const [lastCommandIndex, _setLastCommandIndex] = React.useState<number>(0)
-  const {theme, setTheme} = useTheme()
+  const [history, setHistoryState] = React.useState<History[]>([])
+  const {setTheme} = useTheme()
+  const {setSection} = usePortfolio()
+  const {openAki} = useTerminalUi()
+  const hasInitializedRef = React.useRef(false)
 
-  useEffect(() => {
-    setTheme("homebrew")
-    setCommand("neofetch")
-  }, [])
-
-  useEffect(() => {
-    if (!init) {
-      execute()
-    }
-  }, [command, init])
-
-  const setHistory = (output: string) => {
-    _setHistory([
-      ...history,
+  const appendHistory = React.useCallback((command: string, output: string) => {
+    setHistoryState((previous) => [
+      ...previous,
       {
-        id: history.length,
+        id: previous.length,
         date: new Date(),
-        command: command.split(" ").slice(1).join(" "),
+        command,
         output,
       },
     ])
-  }
+  }, [])
 
-  const setCommand = (command: string) => {
-    _setCommand([Date.now(), command].join(" "))
+  const clearHistory = React.useCallback(() => {
+    setHistoryState([])
+  }, [])
 
-    setInit(false)
-  }
+  const execute = React.useCallback(
+    async (rawCommand: string) => {
+      const trimmed = rawCommand.trim()
 
-  const clearHistory = () => {
-    _setHistory([])
-  }
-
-  const setLastCommandIndex = (index: number) => {
-    _setLastCommandIndex(index)
-  }
-
-  const execute = async () => {
-    const [cmd, ...args] = command.split(" ").slice(1)
-
-    switch (cmd) {
-      case "theme":
-        const output = await bin.theme(args, setTheme)
-        setHistory(output)
-
-        break
-      case "clear":
-        clearHistory()
-        break
-      case "":
-        setHistory("")
-        break
-      default: {
-        if (Object.keys(bin).indexOf(cmd) === -1) {
-          setHistory(`Command not found: ${cmd}. Try 'help' to get started.`)
-        } else {
-          try {
-            const output = await bin[cmd](args)
-            setHistory(output)
-          } catch (error) {
-            setHistory(error.message)
-          }
-        }
+      if (!trimmed) {
+        return
       }
+
+      const [cmdRaw, ...args] = trimmed.split(/\s+/)
+      const cmd = cmdRaw.toLowerCase()
+
+      if (cmd === "clear") {
+        clearHistory()
+        return
+      }
+
+      try {
+        if (cmd === "theme") {
+          const output = await bin.theme(args, setTheme)
+          appendHistory(trimmed, output)
+          return
+        }
+
+        if (cmd === "aki") {
+          openAki()
+        }
+
+        if (sectionIds.includes(cmd as (typeof sectionIds)[number])) {
+          setSection(cmd as (typeof sectionIds)[number])
+        }
+
+        const handler = bin[cmd as keyof typeof bin]
+        const isCallable = typeof handler === "function"
+
+        if (!isCallable) {
+          appendHistory(trimmed, `Command not found: ${cmd}. Try 'help'.`)
+          return
+        }
+
+        const commandHandler = handler as (
+          commandArgs: string[],
+        ) => string | Promise<string>
+        const output = await commandHandler(args)
+        appendHistory(trimmed, output)
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Unexpected terminal error"
+        appendHistory(trimmed, message)
+      }
+    },
+    [appendHistory, clearHistory, openAki, setSection, setTheme],
+  )
+
+  const setCommand = React.useCallback(
+    (command: string) => {
+      void execute(command)
+    },
+    [execute],
+  )
+
+  useEffect(() => {
+    if (hasInitializedRef.current) {
+      return
     }
-  }
+
+    hasInitializedRef.current = true
+    const preferredTheme =
+      typeof window === "undefined"
+        ? config.theme
+        : localStorage.getItem("theme") || config.theme
+
+    setTheme(preferredTheme)
+    appendHistory("", bin.banner())
+  }, [appendHistory, setTheme])
 
   return (
     <ShellContext.Provider
       value={{
         history,
-        command,
-        lastCommandIndex,
-        setHistory,
         setCommand,
-        setLastCommandIndex,
-        execute,
         clearHistory,
       }}
     >

@@ -1,38 +1,27 @@
 "use client"
-import React, { useEffect, useState } from "react"
-import { useTheme } from "../../utils/themeProvider"
-import { useAppearance } from "../../utils/appearanceProvider"
+import React, {useEffect, useState} from "react"
+import {useTheme} from "../../utils/themeProvider"
 
 export const Ps1 = () => {
   const [hostname, setHostname] = useState("")
-  const { theme } = useTheme()
-  const { mode } = useAppearance()
+  const {theme} = useTheme()
 
   useEffect(() => {
-    if (typeof window !== undefined) {
+    if (typeof window !== "undefined") {
       setHostname(window.location.hostname)
     }
   }, [])
 
-  // Light mode uses darker, more visible colors
-  const colors = mode === 'light'
-    ? { yellow: '#b58900', white: '#586e75', green: '#2aa198' }
-    : { yellow: theme.yellow, white: theme.white, green: theme.green }
+  const displayHost =
+    hostname === "localhost" || hostname === "127.0.0.1" || !hostname
+      ? "akicoders.site"
+      : hostname
 
   return (
-    <div className="inline mr-2 log">
-      <span style={{ color: colors.green }}>
-        {hostname}
-      </span>
-      <span style={{ color: colors.green }}>
-        @
-      </span>
-      <span style={{ color: colors.green }}>
-        mystery-visitor
-      </span>
-      <span style={{ color: colors.green }}>
-        :$ ~
-      </span>
+    <div className="terminal-ps1">
+      <span style={{color: theme.green}}>{displayHost}</span>
+      <span style={{color: theme.green}}>@mystery-visitor:$ </span>
+      <span style={{color: theme.green}}>~</span>
     </div>
   )
 }
