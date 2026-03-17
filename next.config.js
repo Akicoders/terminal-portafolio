@@ -1,14 +1,20 @@
+const isProduction = process.env.NODE_ENV === "production"
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
   "object-src 'none'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  isProduction
+    ? "script-src 'self' 'unsafe-inline'"
+    : "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self' data:",
-  "connect-src 'self' ws: wss: https://wttr.in",
+  isProduction
+    ? "connect-src 'self' https://wttr.in"
+    : "connect-src 'self' ws: wss: https://wttr.in",
   "upgrade-insecure-requests",
 ].join("; ")
 

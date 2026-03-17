@@ -105,7 +105,6 @@ export const AkiAssistantProvider = ({
     "idle" | "success" | "error"
   >("idle")
   const [deliveryMessage, setDeliveryMessage] = useState("")
-  const sessionKey = `aki-session-${locale}`
 
   const copy = useMemo<AkiCopy>(
     () =>
@@ -268,10 +267,6 @@ export const AkiAssistantProvider = ({
       : `Client: ${currentAnswers.name || "-"}\nEmail: ${currentAnswers.email || "-"}\nCompany: ${currentAnswers.company || "-"}\nService: ${currentAnswers.service || "-"}\nChallenge: ${currentAnswers.challenge || "-"}\nGoal: ${currentAnswers.goal || "-"}\nTimeline: ${currentAnswers.timeline || "-"}\nBudget: ${currentAnswers.budget || "-"}`
 
   const resetSession = React.useCallback(() => {
-    if (typeof window !== "undefined") {
-      window.sessionStorage.removeItem(sessionKey)
-    }
-
     setAnswers(createEmptyAnswers())
     setMessages([
       {id: createId(), role: "assistant", content: copy.intro},
@@ -283,68 +278,11 @@ export const AkiAssistantProvider = ({
     setSubmitting(false)
     setDeliveryStatus("idle")
     setDeliveryMessage("")
-  }, [copy, sessionKey])
+  }, [copy])
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return
-    }
-
-    const saved = window.sessionStorage.getItem(sessionKey)
-
-    if (!saved) {
-      resetSession()
-      return
-    }
-
-    try {
-      const parsed = JSON.parse(saved) as {
-        answers: LeadAnswers
-        messages: AkiMessage[]
-        stepIndex: number
-        completed: boolean
-        deliveryStatus: "idle" | "success" | "error"
-        deliveryMessage: string
-      }
-
-      setAnswers(parsed.answers)
-      setMessages(parsed.messages)
-      setStepIndex(parsed.stepIndex)
-      setCompleted(parsed.completed)
-      setSubmitting(false)
-      setDeliveryStatus(parsed.deliveryStatus)
-      setDeliveryMessage(parsed.deliveryMessage)
-      setInput("")
-    } catch {
-      resetSession()
-    }
-  }, [resetSession, sessionKey])
-
-  useEffect(() => {
-    if (typeof window === "undefined" || messages.length === 0) {
-      return
-    }
-
-    window.sessionStorage.setItem(
-      sessionKey,
-      JSON.stringify({
-        answers,
-        messages,
-        stepIndex,
-        completed,
-        deliveryStatus,
-        deliveryMessage,
-      }),
-    )
-  }, [
-    answers,
-    completed,
-    deliveryMessage,
-    deliveryStatus,
-    messages,
-    sessionKey,
-    stepIndex,
-  ])
+    resetSession()
+  }, [resetSession])
 
   const submitInput = React.useCallback(() => {
     const currentQuestion = copy.questions[stepIndex]

@@ -28,12 +28,32 @@ const BlogArticlePage: React.FC<BlogArticlePageProps> = ({slug}) => {
   const relatedPosts = copy.sections.blog.posts
     .filter((item) => item.slug !== slug)
     .slice(0, 2)
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.summary,
+    author: {
+      "@type": "Person",
+      name: "Jose Paul Campos Terrones",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "JP Campos",
+    },
+    url: `https://akicoders.site/blog/${article.slug}`,
+    articleSection: article.category,
+  }
 
   return (
     <Layout contextLabel={copy.sections.blog.title}>
       <div className="workspace-grid article-workspace">
         <article className="executive-surface article-surface">
           <div className="executive-scroll article-scroll">
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{__html: JSON.stringify(articleJsonLd)}}
+            />
             <div className="article-topbar">
               <Link href="/#blog" className="inline-action article-back-link">
                 {copy.labels.backToHome}

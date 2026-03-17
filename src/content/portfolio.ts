@@ -30,6 +30,7 @@ interface ProjectItem {
   href: string
   metric: string
   category: string
+  kind: "project" | "automation"
 }
 
 interface ContactItem {
@@ -158,7 +159,7 @@ interface LocaleContent {
   }
 }
 
-const baseProjects = {
+const baseProjects: Record<Locale, ProjectItem[]> = {
   es: [
     {
       title: "Startup Validator",
@@ -167,7 +168,8 @@ const baseProjects = {
       tags: ["React", "TypeScript", "n8n", "Vite"],
       href: "https://github.com/Akicoders/startup-validator",
       metric: "AI Validation",
-      category: "AI / Automation",
+      category: "AI Products",
+      kind: "project",
     },
     {
       title: "makers-of-ayllu",
@@ -177,6 +179,7 @@ const baseProjects = {
       href: "https://github.com/Akicoders/makers-of-ayllu",
       metric: "Community Platform",
       category: "Platforms",
+      kind: "project",
     },
     {
       title: "LibrerIA AI",
@@ -185,7 +188,8 @@ const baseProjects = {
       tags: ["FastAPI", "React", "Spring Boot", "Redis"],
       href: "https://github.com/Akicoders/librerIA-ai",
       metric: "AI Platform",
-      category: "AI / Automation",
+      category: "AI Products",
+      kind: "project",
     },
     {
       title: "estacionamiento",
@@ -195,6 +199,7 @@ const baseProjects = {
       href: "https://github.com/Akicoders/estacionamiento",
       metric: "Business System",
       category: "Software",
+      kind: "project",
     },
     {
       title: "Reserva Canchas CRUD",
@@ -204,6 +209,117 @@ const baseProjects = {
       href: "https://github.com/Akicoders/Reserva_Canchas-CRUD-",
       metric: "Java + SQLite",
       category: "Software",
+      kind: "project",
+    },
+    {
+      title: "ChatPDF",
+      summary:
+        "Experimento enfocado en conversaciones sobre documentos PDF, acceso rapido al contenido y exploracion de interfaces de lectura asistida.",
+      tags: ["Svelte", "PDF", "AI"],
+      href: "https://github.com/Akicoders/ChatPDF",
+      metric: "Document Q&A",
+      category: "AI Products",
+      kind: "project",
+    },
+    {
+      title: "ml-laboratory",
+      summary:
+        "Espacio de comunidad y experimentacion en IA donde comparto aprendizaje, pruebas y exploracion de nuevas herramientas.",
+      tags: ["Community", "LLMs", "Research"],
+      href: "https://github.com/Akicoders/ml-laboratory",
+      metric: "AI Community",
+      category: "Platforms",
+      kind: "project",
+    },
+    {
+      title: "M&V Bienes Raices",
+      summary:
+        "Sitio web para una empresa inmobiliaria de Chiclayo, enfocado en presencia digital, visibilidad y contacto comercial.",
+      tags: ["Web", "Client Work", "Real Estate"],
+      href: "https://mvbienesraices.com",
+      metric: "Client Website",
+      category: "Client Work",
+      kind: "project",
+    },
+    {
+      title: "Control de Gastos e Ingresos por Telegram",
+      summary:
+        "Automatizacion multimodal en Telegram para registrar gastos e ingresos a partir de fotos, audios y PDFs de comprobantes, clasificarlos y dejarlos ordenados en una hoja con metricas claras.",
+      tags: ["n8n", "Telegram", "Sheets", "AI"],
+      href: "https://akicoders.site",
+      metric: "Orden monetario",
+      category: "Automation Cases",
+      kind: "automation",
+    },
+    {
+      title: "Agente Cotizador",
+      summary:
+        "Flujo para transformar requerimientos capturados en formulario, enlaces de YouTube o PDFs en una cotizacion profesional, moderna y lista para enviar despues de una reunion.",
+      tags: ["n8n", "AI", "PDF API", "Forms"],
+      href: "https://akicoders.site",
+      metric: "Faster Quotes",
+      category: "Automation Cases",
+      kind: "automation",
+    },
+    {
+      title: "Lead Routing to CRM",
+      summary:
+        "Flujo de automatizacion para recibir leads, enriquecerlos, resumir contexto y enviarlos a CRM o Telegram para seguimiento comercial.",
+      tags: ["n8n", "CRM", "Telegram", "Leads"],
+      href: "https://akicoders.site",
+      metric: "Lead Ops",
+      category: "Automation Cases",
+      kind: "automation",
+    },
+    {
+      title: "Conectica Elections Assistant",
+      summary:
+        "Asistente conversacional con memoria en Postgres y vector store en Supabase para responder con contexto reutilizable y consultas enriquecidas en tiempo real.",
+      tags: ["n8n", "OpenAI", "Supabase", "Postgres"],
+      href: "https://akicoders.site",
+      metric: "RAG Assistant",
+      category: "Automation Cases",
+      kind: "automation",
+    },
+    {
+      title: "Newsletter Automation",
+      summary:
+        "Flujo para generar newsletters desde formularios, construir HTML y despachar mensajes por Gmail para clientes en tiempo real.",
+      tags: ["n8n", "Gmail", "HTML", "MySQL"],
+      href: "https://akicoders.site",
+      metric: "Email Workflow",
+      category: "Automation Cases",
+      kind: "automation",
+    },
+    {
+      title: "Meeting Scheduler Automation",
+      summary:
+        "Workflow que recibe solicitudes, formatea datos, crea eventos en Google Calendar y responde automaticamente segun disponibilidad.",
+      tags: ["n8n", "Google Calendar", "Gmail", "Webhook"],
+      href: "https://akicoders.site",
+      metric: "Scheduling",
+      category: "Automation Cases",
+      kind: "automation",
+    },
+    {
+      title: "Inventory & Sales Agent",
+      summary:
+        "Agente multimodal para consultar productos, editar stock, leer incidentes y registrar historial de ventas con memoria y hojas conectadas.",
+      tags: ["n8n", "OpenRouter", "Sheets", "Postgres"],
+      href: "https://akicoders.site",
+      metric: "Ops Copilot",
+      category: "Automation Cases",
+      kind: "automation",
+    },
+    {
+      title: "Facebook Leads to CRM",
+      summary:
+        "Pipeline para capturar leads desde Facebook Lead Ads, enriquecer datos, limpiarlos y guardarlos automaticamente en tu base comercial.",
+      tags: ["n8n", "Facebook", "NocoDB", "CRM"],
+      href: "https://akicoders.site",
+      metric: "Lead Capture",
+      category: "Automation Cases",
+      kind: "automation",
     },
   ],
   en: [
@@ -214,7 +330,8 @@ const baseProjects = {
       tags: ["React", "TypeScript", "n8n", "Vite"],
       href: "https://github.com/Akicoders/startup-validator",
       metric: "AI Validation",
-      category: "AI / Automation",
+      category: "AI Products",
+      kind: "project",
     },
     {
       title: "makers-of-ayllu",
@@ -224,6 +341,7 @@ const baseProjects = {
       href: "https://github.com/Akicoders/makers-of-ayllu",
       metric: "Community Platform",
       category: "Platforms",
+      kind: "project",
     },
     {
       title: "LibrerIA AI",
@@ -232,7 +350,8 @@ const baseProjects = {
       tags: ["FastAPI", "React", "Spring Boot", "Redis"],
       href: "https://github.com/Akicoders/librerIA-ai",
       metric: "AI Platform",
-      category: "AI / Automation",
+      category: "AI Products",
+      kind: "project",
     },
     {
       title: "estacionamiento",
@@ -242,6 +361,7 @@ const baseProjects = {
       href: "https://github.com/Akicoders/estacionamiento",
       metric: "Business System",
       category: "Software",
+      kind: "project",
     },
     {
       title: "Reserva Canchas CRUD",
@@ -251,6 +371,117 @@ const baseProjects = {
       href: "https://github.com/Akicoders/Reserva_Canchas-CRUD-",
       metric: "Java + SQLite",
       category: "Software",
+      kind: "project",
+    },
+    {
+      title: "ChatPDF",
+      summary:
+        "An experiment around PDF conversations, fast document access and assisted reading interfaces.",
+      tags: ["Svelte", "PDF", "AI"],
+      href: "https://github.com/Akicoders/ChatPDF",
+      metric: "Document Q&A",
+      category: "AI Products",
+      kind: "project",
+    },
+    {
+      title: "ml-laboratory",
+      summary:
+        "A community and experimentation space for AI where I share learning, prototypes and tool exploration.",
+      tags: ["Community", "LLMs", "Research"],
+      href: "https://github.com/Akicoders/ml-laboratory",
+      metric: "AI Community",
+      category: "Platforms",
+      kind: "project",
+    },
+    {
+      title: "M&V Bienes Raices",
+      summary:
+        "A website for a real-estate company in Chiclayo, focused on digital presence, visibility and lead capture.",
+      tags: ["Web", "Client Work", "Real Estate"],
+      href: "https://mvbienesraices.com",
+      metric: "Client Website",
+      category: "Client Work",
+      kind: "project",
+    },
+    {
+      title: "Telegram Expense & Income Control",
+      summary:
+        "A multimodal Telegram automation that reads receipts from photos, audio and PDFs, classifies each movement and logs it into a spreadsheet with clear financial insights.",
+      tags: ["n8n", "Telegram", "Sheets", "AI"],
+      href: "https://akicoders.site",
+      metric: "Financial Order",
+      category: "Automation Cases",
+      kind: "automation",
+    },
+    {
+      title: "Quotation Agent",
+      summary:
+        "A workflow that turns meeting requirements submitted through forms, YouTube links or PDFs into a professional and modern quotation ready to share.",
+      tags: ["n8n", "AI", "PDF API", "Forms"],
+      href: "https://akicoders.site",
+      metric: "Faster Quotes",
+      category: "Automation Cases",
+      kind: "automation",
+    },
+    {
+      title: "Lead Routing to CRM",
+      summary:
+        "An automation that receives leads, enriches context and pushes them to CRM or Telegram for faster commercial follow-up.",
+      tags: ["n8n", "CRM", "Telegram", "Leads"],
+      href: "https://akicoders.site",
+      metric: "Lead Ops",
+      category: "Automation Cases",
+      kind: "automation",
+    },
+    {
+      title: "Conectica Elections Assistant",
+      summary:
+        "A conversational assistant backed by Postgres memory and a Supabase vector store for reusable context and enriched answers in real time.",
+      tags: ["n8n", "OpenAI", "Supabase", "Postgres"],
+      href: "https://akicoders.site",
+      metric: "RAG Assistant",
+      category: "Automation Cases",
+      kind: "automation",
+    },
+    {
+      title: "Newsletter Automation",
+      summary:
+        "A workflow that generates newsletters from form input, builds HTML and dispatches messages through Gmail in real time.",
+      tags: ["n8n", "Gmail", "HTML", "MySQL"],
+      href: "https://akicoders.site",
+      metric: "Email Workflow",
+      category: "Automation Cases",
+      kind: "automation",
+    },
+    {
+      title: "Meeting Scheduler Automation",
+      summary:
+        "A workflow that receives requests, formats data, creates Google Calendar events and responds automatically based on availability.",
+      tags: ["n8n", "Google Calendar", "Gmail", "Webhook"],
+      href: "https://akicoders.site",
+      metric: "Scheduling",
+      category: "Automation Cases",
+      kind: "automation",
+    },
+    {
+      title: "Inventory & Sales Agent",
+      summary:
+        "A multimodal agent that reads products, updates stock, checks incidents and records sales history using memory and connected sheets.",
+      tags: ["n8n", "OpenRouter", "Sheets", "Postgres"],
+      href: "https://akicoders.site",
+      metric: "Ops Copilot",
+      category: "Automation Cases",
+      kind: "automation",
+    },
+    {
+      title: "Facebook Leads to CRM",
+      summary:
+        "A pipeline that captures leads from Facebook Lead Ads, enriches and cleans the data, then stores it in your sales database automatically.",
+      tags: ["n8n", "Facebook", "NocoDB", "CRM"],
+      href: "https://akicoders.site",
+      metric: "Lead Capture",
+      category: "Automation Cases",
+      kind: "automation",
     },
   ],
 }
@@ -422,7 +653,14 @@ export const portfolioContent: Record<Locale, LocaleContent> = {
         title: "Proyectos Estrategicos",
         subtitle:
           "Proyectos reales curados entre software, IA, automatizacion y plataformas.",
-        filters: ["Destacados", "AI / Automation", "Platforms", "Software"],
+        filters: [
+          "Destacados",
+          "Automation Cases",
+          "AI Products",
+          "Platforms",
+          "Software",
+          "Client Work",
+        ],
         items: baseProjects.es,
       },
       contact: {
@@ -549,11 +787,35 @@ export const portfolioContent: Record<Locale, LocaleContent> = {
               "En escenarios SaaS, priorizar onboarding, propuesta de valor y observabilidad basica suele rendir mejor que intentar cubrir todos los modulos desde el inicio. La estabilidad se construye cuando cada iteracion deja una base mas simple de operar y medir.",
             ],
           },
+          {
+            slug: "adopcion-de-ia-en-equipos-sin-friccion",
+            title: "Adopcion de IA en equipos sin friccion",
+            meta: "Oct 2025 - 6 min - IA",
+            summary:
+              "Como introducir Claude Code, Codex u OpenCode sin generar caos operativo en el equipo.",
+            category: "IA",
+            body: [
+              "Adoptar herramientas de IA sin proceso suele producir el efecto contrario al esperado: prompts dispersos, poca trazabilidad y una falsa sensacion de velocidad. El problema no es la herramienta, sino la ausencia de criterios de uso, ownership y control de calidad.",
+              "La forma mas efectiva de introducir IA en un equipo es acotar casos de uso, definir buenas practicas y medir donde realmente ahorra tiempo. Cuando la adopcion esta guiada, la IA deja de ser novedad y se convierte en un multiplicador real de productividad.",
+            ],
+          },
+          {
+            slug: "automatizar-leads-sin-perder-contexto-comercial",
+            title: "Automatizar leads sin perder contexto comercial",
+            meta: "Sep 2025 - 9 min - Automatizacion",
+            summary:
+              "Como conectar formularios, IA, CRM y Telegram para responder mas rapido sin romper el seguimiento humano.",
+            category: "Automatizacion",
+            body: [
+              "Muchos equipos automatizan la entrada de leads pero pierden el contexto importante en el camino. Terminan con registros frios en el CRM y mensajes sin prioridad real. El cuello de botella no esta en captar el lead, sino en entenderlo y moverlo con contexto util.",
+              "Un buen flujo de automatizacion resume necesidad, urgencia, presupuesto y siguiente paso antes de enviarlo al canal comercial. Esa capa extra mejora la velocidad de respuesta y hace que ventas reciba oportunidades mejor calificadas en lugar de solo notificaciones vacias.",
+            ],
+          },
         ],
       },
     },
     terminal: {
-      bannerLead: "Hybrid portfolio ready.",
+      bannerLead: "Professional portfolio ready.",
       bannerHint: "Sidebar for fast browsing, terminal for power users.",
       about:
         "Perfil abierto en el panel principal. Usa el sidebar o escribe 'neofetch' para un resumen tecnico.",
@@ -739,7 +1001,14 @@ export const portfolioContent: Record<Locale, LocaleContent> = {
         title: "Strategic Projects",
         subtitle:
           "Real curated projects across software, AI, automation and platforms.",
-        filters: ["Featured", "AI / Automation", "Platforms", "Software"],
+        filters: [
+          "Featured",
+          "Automation Cases",
+          "AI Products",
+          "Platforms",
+          "Software",
+          "Client Work",
+        ],
         items: baseProjects.en,
       },
       contact: {
@@ -866,11 +1135,35 @@ export const portfolioContent: Record<Locale, LocaleContent> = {
               "In SaaS settings, prioritizing onboarding, value proposition and basic observability usually pays off more than trying to launch every module at once. Stability comes from leaving each iteration easier to operate and measure.",
             ],
           },
+          {
+            slug: "adopting-ai-tools-without-team-friction",
+            title: "Adopting AI tools without creating team friction",
+            meta: "Oct 2025 - 6 min - AI",
+            summary:
+              "How to introduce Claude Code, Codex or OpenCode without creating operational chaos inside a team.",
+            category: "AI",
+            body: [
+              "Adopting AI tools without a process usually creates the opposite effect: scattered prompts, poor traceability and a false sense of speed. The issue is rarely the tool itself. It is the lack of usage rules, ownership and quality control.",
+              "The most effective way to introduce AI into a team is to narrow the first use cases, define good practices and measure where it truly saves time. With guided adoption, AI stops being novelty and becomes a real productivity multiplier.",
+            ],
+          },
+          {
+            slug: "automating-leads-without-losing-sales-context",
+            title: "Automating leads without losing sales context",
+            meta: "Sep 2025 - 9 min - Automation",
+            summary:
+              "How to connect forms, AI, CRM and Telegram to respond faster without breaking human follow-up.",
+            category: "Automation",
+            body: [
+              "Many teams automate lead intake but lose the most useful context on the way. They end up with cold CRM records and notifications that say very little. The bottleneck is not capturing the lead. It is understanding it and moving it with usable context.",
+              "A strong automation flow summarizes the need, urgency, budget and next step before sending it to the sales channel. That extra layer improves response speed and makes sales receive better qualified opportunities instead of empty alerts.",
+            ],
+          },
         ],
       },
     },
     terminal: {
-      bannerLead: "Hybrid portfolio ready.",
+      bannerLead: "Professional portfolio ready.",
       bannerHint: "Sidebar for quick browsing, terminal for power users.",
       about:
         "Profile opened in the main panel. Use the sidebar or type 'neofetch' for a technical summary.",

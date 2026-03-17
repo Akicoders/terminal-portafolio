@@ -148,6 +148,10 @@ const Layout: React.FC<Props> = ({children, contextLabel}) => {
 
   return (
     <div className="terminal-root" data-mode={mode} style={themeVars}>
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+
       <div className="mobile-shellbar">
         <div className="mobile-shellbar-copy">
           <strong className="display-font">{copy.brand.name}</strong>
@@ -203,7 +207,9 @@ const Layout: React.FC<Props> = ({children, contextLabel}) => {
           <SideBar onCommand={() => setMobileMenuOpen(false)} />
         </div>
 
-        <main className="terminal-main">{children}</main>
+        <main id="main-content" className="terminal-main" tabIndex={-1}>
+          {children}
+        </main>
       </div>
 
       <TerminalLauncher />

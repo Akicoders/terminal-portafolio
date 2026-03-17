@@ -26,7 +26,7 @@ import {
   siTailwindcss,
   siTypescript,
 } from "simple-icons"
-import fondoImage from "../../assets/fondo.jpeg"
+import fondoImage from "../../assets/fondo.webp"
 import {portfolioContent} from "../../content/portfolio"
 import {usePortfolio} from "../../utils/portfolioProvider"
 import LeadContactForm from "./LeadContactForm"
@@ -311,15 +311,64 @@ const ProjectsSection = () => {
   const content = copy.sections.projects
   const allLabel = content.filters[0]
   const [activeFilter, setActiveFilter] = useState(allLabel)
+  const [activeStack, setActiveStack] = useState("")
+
+  const stackFilters = useMemo(
+    () =>
+      Array.from(
+        new Set(content.items.flatMap((project) => project.tags)),
+      ).sort(),
+    [content.items],
+  )
 
   useEffect(() => {
     setActiveFilter(allLabel)
+    setActiveStack("")
   }, [allLabel, locale])
 
-  const filteredProjects =
-    activeFilter === allLabel
-      ? content.items
-      : content.items.filter((project) => project.category === activeFilter)
+  const filteredProjects = content.items.filter((project) => {
+    const matchesCategory =
+      activeFilter === allLabel ? true : project.category === activeFilter
+    const matchesStack = activeStack ? project.tags.includes(activeStack) : true
+    return matchesCategory && matchesStack
+  })
+
+  const automationProjects = filteredProjects.filter(
+    (project) => project.kind === "automation",
+  )
+  const standardProjects = filteredProjects.filter(
+    (project) => project.kind === "project",
+  )
+  const showSeparatedAutomation = activeFilter === allLabel
+
+  const renderProjectCards = (items: typeof filteredProjects) => (
+    <div className="project-list">
+      {items.map((project) => (
+        <article key={project.title} className="executive-card project-card">
+          <div className="project-topline">
+            <strong className="project-metric">{project.metric}</strong>
+            <a
+              className="inline-action"
+              href={project.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {copy.labels.openLink}
+            </a>
+          </div>
+          <h3 className="display-font section-card-title">{project.title}</h3>
+          <p className="project-summary">{project.summary}</p>
+          <div className="tag-row">
+            {project.tags.map((tag) => (
+              <span key={tag} className="tag">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  )
 
   return (
     <div className="section-stack">
@@ -336,32 +385,57 @@ const ProjectsSection = () => {
         ))}
       </div>
 
-      <div className="project-list">
-        {filteredProjects.map((project) => (
-          <article key={project.title} className="executive-card project-card">
-            <div className="project-topline">
-              <strong className="project-metric">{project.metric}</strong>
-              <a
-                className="inline-action"
-                href={project.href}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {copy.labels.openLink}
-              </a>
-            </div>
-            <h3 className="display-font section-card-title">{project.title}</h3>
-            <p className="project-summary">{project.summary}</p>
-            <div className="tag-row">
-              {project.tags.map((tag) => (
-                <span key={tag} className="tag">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </article>
+      <div
+        className="chip-row stack-filter-row"
+        aria-label="Project stack filters"
+      >
+        {stackFilters.map((filter) => (
+          <button
+            key={filter}
+            type="button"
+            className={`chip ${activeStack === filter ? "is-active" : ""}`}
+            onClick={() =>
+              setActiveStack((current) => (current === filter ? "" : filter))
+            }
+          >
+            {filter}
+          </button>
         ))}
       </div>
+
+      {showSeparatedAutomation ? (
+        <>
+          <div className="section-block">
+            <div className="section-block-header">
+              <h3 className="display-font section-card-title">
+                {locale === "es" ? "Proyectos destacados" : "Featured projects"}
+              </h3>
+              <p className="project-summary">
+                {locale === "es"
+                  ? "Software y productos reales seleccionados para mostrar capacidad tecnica y de negocio."
+                  : "Selected software and product work that reflects technical and business execution."}
+              </p>
+            </div>
+            {renderProjectCards(standardProjects)}
+          </div>
+
+          <div className="section-block">
+            <div className="section-block-header">
+              <h3 className="display-font section-card-title">
+                Automation Cases
+              </h3>
+              <p className="project-summary">
+                {locale === "es"
+                  ? "Workflows de automatizacion, agentes y pipelines conectados a operaciones reales."
+                  : "Automation workflows, agents and pipelines connected to real operations."}
+              </p>
+            </div>
+            {renderProjectCards(automationProjects)}
+          </div>
+        </>
+      ) : (
+        renderProjectCards(filteredProjects)
+      )}
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import {NextRequest, NextResponse} from "next/server"
 import {checkRateLimit} from "../../../lib/rateLimit"
+import {isTrustedOrigin} from "../../../lib/requestOrigin"
 
 const REQUEST_TIMEOUT_MS = 10000
 
@@ -39,6 +40,10 @@ const validatePayload = (payload: AkiLeadPayload) => {
 
   if (!payload.service || payload.service.length > 80) {
     return "Please provide a valid service."
+  }
+
+  if (payload.company && payload.company.length > 120) {
+    return "Company name is too long."
   }
 
   if (
@@ -81,6 +86,22 @@ const validatePayload = (payload: AkiLeadPayload) => {
     return "Please provide a valid conversation summary."
   }
 
+  if (
+    !payload.proposal ||
+    payload.proposal.trim().length < 8 ||
+    payload.proposal.length > 600
+  ) {
+    return "Please provide a valid proposal summary."
+  }
+
+  if (
+    !payload.salesAngle ||
+    payload.salesAngle.trim().length < 8 ||
+    payload.salesAngle.length > 600
+  ) {
+    return "Please provide a valid sales angle."
+  }
+
   return null
 }
 
@@ -90,12 +111,21 @@ const forwardLead = async (
 ) => {
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+  const authHeader = process.env.AKI_LEAD_WEBHOOK_AUTH_HEADER
+  const username = process.env.AKI_LEAD_WEBHOOK_USERNAME
+  const password = process.env.AKI_LEAD_WEBHOOK_PASSWORD
+  const authorization = authHeader
+    ? authHeader
+    : username && password
+      ? `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`
+      : undefined
 
   try {
     const response = await fetch(webhookUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...(authorization ? {Authorization: authorization} : {}),
       },
       body: JSON.stringify(payload),
       signal: controller.signal,
@@ -110,6 +140,10 @@ const forwardLead = async (
 
 export async function POST(request: NextRequest) {
   try {
+    if (!isTrustedOrigin(request)) {
+      return NextResponse.json({message: "Untrusted origin."}, {status: 403})
+    }
+
     const forwardedFor = request.headers.get("x-forwarded-for") || "unknown"
     const ip = forwardedFor.split(",")[0]?.trim() || "unknown"
     const rateLimit = checkRateLimit(`aki:${ip}`, 5, 15 * 60 * 1000)
@@ -137,8 +171,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({message: validationError}, {status: 400})
     }
 
-    const webhookUrl =
-      process.env.AKI_LEAD_WEBHOOK_URL || process.env.LEAD_WEBHOOK_URL
+    const webhookUrl = process.env.AKI_LEAD_WEBHOOK_URL
 
     if (!webhookUrl) {
       return NextResponse.json(

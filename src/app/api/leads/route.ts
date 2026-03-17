@@ -1,8 +1,50 @@
 import {NextRequest, NextResponse} from "next/server"
 import {checkRateLimit} from "../../../lib/rateLimit"
+import {isTrustedOrigin} from "../../../lib/requestOrigin"
 
 const FALLBACK_EMAIL = "josepaulcamposterrones@gmail.com"
 const REQUEST_TIMEOUT_MS = 10000
+
+const sendViaResend = async (payload: LeadPayload) => {
+  const apiKey = process.env.RESEND_API_KEY
+  const from = process.env.RESEND_FROM_EMAIL
+  const to = process.env.RESEND_TO_EMAIL || FALLBACK_EMAIL
+
+  if (!apiKey || !from) {
+    return false
+  }
+
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        subject: `Nuevo lead: ${payload.service || "portfolio-contact"}`,
+        text: [
+          `Nombre: ${payload.name.trim()}`,
+          `Email: ${payload.email.trim().toLowerCase()}`,
+          `Empresa: ${payload.company?.trim() || "-"}`,
+          `Servicio: ${payload.service?.trim() || "-"}`,
+          "",
+          payload.message.trim(),
+        ].join("\n"),
+      }),
+      signal: controller.signal,
+    })
+
+    return response.ok
+  } finally {
+    clearTimeout(timeoutId)
+  }
+}
 
 interface LeadPayload {
   name: string
@@ -77,6 +119,10 @@ const forwardLead = async (
 
 export async function POST(request: NextRequest) {
   try {
+    if (!isTrustedOrigin(request)) {
+      return NextResponse.json({message: "Untrusted origin."}, {status: 403})
+    }
+
     const forwardedFor = request.headers.get("x-forwarded-for") || "unknown"
     const ip = forwardedFor.split(",")[0]?.trim() || "unknown"
     const rateLimit = checkRateLimit(`lead:${ip}`, 8, 10 * 60 * 1000)
@@ -127,6 +173,12 @@ export async function POST(request: NextRequest) {
       }
 
       return NextResponse.json({delivery: "webhook"}, {status: 200})
+    }
+
+    const resendDelivered = await sendViaResend(payload)
+
+    if (resendDelivered) {
+      return NextResponse.json({delivery: "resend"}, {status: 200})
     }
 
     return NextResponse.json(
