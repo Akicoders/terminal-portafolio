@@ -23,9 +23,6 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   outputFileTracingRoot: path.join(__dirname),
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
   async headers() {
     return [
       {

@@ -7,6 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/"],
     },
+    host: "https://akicoders.site",
     sitemap: "https://akicoders.site/sitemap.xml",
   }
 }

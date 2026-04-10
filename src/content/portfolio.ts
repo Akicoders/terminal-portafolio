@@ -536,13 +536,17 @@ export const portfolioContent: Record<Locale, LocaleContent> = {
           "Mi enfoque esta en cerrar la brecha entre ingenieria de software robusta y AI de frontera. Trabajo con React, TypeScript, Python, Docker, n8n y LLMs para crear sistemas inteligentes que impulsen crecimiento y eficiencia.",
         kpis: [
           {
-            value: "30GB→14GB",
-            label: "optimizacion real de VRAM con quantization",
+            value: "Software",
+            label: "desarrollo de software escalable y soluciones a medida",
           },
-          {value: "LoRA", label: "fine-tuning para contexto de negocio"},
           {
-            value: "n8n + Docker",
-            label: "automatizacion y orquestacion de operaciones",
+            value: "AI Training",
+            label:
+              "entrenamiento, adopcion y uso practico de herramientas de IA",
+          },
+          {
+            value: "Automation",
+            label: "automatizaciones empresariales con n8n, Python y agentes",
           },
         ],
         cards: [
@@ -881,16 +885,18 @@ export const portfolioContent: Record<Locale, LocaleContent> = {
           "My focus is on bridging robust software engineering and frontier AI. I work with React, TypeScript, Python, Docker, n8n and LLM tooling to create intelligent systems that drive growth and efficiency.",
         kpis: [
           {
-            value: "30GB→14GB",
-            label: "real VRAM reduction through LLM quantization",
+            value: "Software",
+            label:
+              "scalable software development and tailored digital solutions",
           },
           {
-            value: "LoRA",
-            label: "model fine-tuning aligned with business context",
+            value: "AI Training",
+            label: "team enablement, adoption and practical AI workflows",
           },
           {
-            value: "n8n + Docker",
-            label: "automation and orchestration of repeated processes",
+            value: "Automation",
+            label:
+              "business automation with n8n, Python and agent-based workflows",
           },
         ],
         cards: [

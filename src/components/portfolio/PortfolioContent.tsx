@@ -291,16 +291,16 @@ const SkillsSection = () => {
         ))}
       </div>
 
-      <div className="stack-card-grid">
-        {content.stack.bullets.map((item) => (
-          <article key={item} className="executive-card stack-card">
-            <h3 className="display-font section-card-title">
-              {content.stack.title}
-            </h3>
-            <p className="project-summary">{item}</p>
-          </article>
-        ))}
-      </div>
+      <article className="executive-card stack-card">
+        <h3 className="display-font section-card-title">
+          {content.stack.title}
+        </h3>
+        <ul className="detail-list">
+          {content.stack.bullets.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </article>
     </div>
   )
 }
@@ -385,22 +385,25 @@ const ProjectsSection = () => {
         ))}
       </div>
 
-      <div
-        className="chip-row stack-filter-row"
-        aria-label="Project stack filters"
-      >
-        {stackFilters.map((filter) => (
-          <button
-            key={filter}
-            type="button"
-            className={`chip ${activeStack === filter ? "is-active" : ""}`}
-            onClick={() =>
-              setActiveStack((current) => (current === filter ? "" : filter))
-            }
+      <div className="filter-toolbar">
+        <label className="filter-select-field">
+          <span>
+            {locale === "es" ? "Filtrar por stack" : "Filter by stack"}
+          </span>
+          <select
+            value={activeStack}
+            onChange={(event) => setActiveStack(event.target.value)}
           >
-            {filter}
-          </button>
-        ))}
+            <option value="">
+              {locale === "es" ? "Todos los stacks" : "All stacks"}
+            </option>
+            {stackFilters.map((filter) => (
+              <option key={filter} value={filter}>
+                {filter}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
 
       {showSeparatedAutomation ? (

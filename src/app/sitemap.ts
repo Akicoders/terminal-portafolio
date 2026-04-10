@@ -4,10 +4,10 @@ import {getAllBlogSlugs} from "../content/portfolio"
 const siteUrl = "https://akicoders.site"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes: MetadataRoute.Sitemap = ["", "/aki"].map((route) => ({
+  const staticRoutes: MetadataRoute.Sitemap = [""].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),
-    changeFrequency: route === "" ? "weekly" : "monthly",
+    changeFrequency: route === "" ? "daily" : "monthly",
     priority: route === "" ? 1 : 0.7,
   }))
 
