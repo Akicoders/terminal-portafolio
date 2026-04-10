@@ -77,58 +77,25 @@ const Layout: React.FC<Props> = ({children, contextLabel}) => {
     [accent, mode, theme.background, theme.cyan, theme.foreground],
   )
 
-  const rows = 7
-  const columns = 11
-  const boxes = useMemo(
-    () =>
-      Array.from({length: rows * columns}, (_, index) => (
-        <div
-          className="sweep-box"
-          style={{backgroundColor: theme.green}}
-          key={index}
-        />
-      )),
-    [theme.green],
-  )
-
   useEffect(() => {
     if (!overlayRef.current) {
       return
     }
 
-    const localBoxes =
-      overlayRef.current.querySelectorAll<HTMLElement>(".sweep-box")
     const timeline = gsap.timeline()
 
     timeline
-      .set(overlayRef.current, {autoAlpha: 1})
-      .to(localBoxes, {
-        duration: 0.28,
-        autoAlpha: 1,
-        ease: "power1.inOut",
-        stagger: {
-          grid: [rows, columns],
-          from: "end",
-          each: 0.03,
-        },
-      })
-      .to(
-        localBoxes,
-        {
-          duration: 0.28,
-          autoAlpha: 0,
-          ease: "power2.out",
-          stagger: {
-            grid: [rows, columns],
-            from: "end",
-            each: 0.03,
-          },
-        },
-        0.42,
-      )
+      .set(overlayRef.current, {autoAlpha: 1, scaleY: 0, transformOrigin: "bottom"})
       .to(overlayRef.current, {
-        duration: 0.2,
-        autoAlpha: 0,
+        duration: 0.25,
+        scaleY: 1,
+        ease: "power2.out",
+      })
+      .to(overlayRef.current, {
+        duration: 0.25,
+        scaleY: 0,
+        transformOrigin: "top",
+        ease: "power2.inOut",
       })
   }, [theme.green])
 
@@ -218,11 +185,9 @@ const Layout: React.FC<Props> = ({children, contextLabel}) => {
       <div
         ref={overlayRef}
         className="layout-sweep-overlay"
-        style={{gridTemplateColumns: `repeat(${columns}, 1fr)`}}
+        style={{backgroundColor: theme.green}}
         aria-hidden="true"
-      >
-        {boxes}
-      </div>
+      />
     </div>
   )
 }

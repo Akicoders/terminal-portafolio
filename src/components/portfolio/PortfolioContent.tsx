@@ -25,6 +25,11 @@ import {
   siSqlite,
   siTailwindcss,
   siTypescript,
+  siSvelte,
+  siVite,
+  siPostgresql,
+  siSupabase,
+  siMysql,
 } from "simple-icons"
 import fondoImage from "../../assets/fondo.webp"
 import {portfolioContent} from "../../content/portfolio"
@@ -66,6 +71,11 @@ const techBadgeMap: Record<
   Docker: {path: siDocker.path, color: `#${siDocker.hex}`},
   Linux: {path: siLinux.path, color: `#${siLinux.hex}`},
   Git: {path: siGit.path, color: `#${siGit.hex}`},
+  Svelte: {path: siSvelte.path, color: `#${siSvelte.hex}`},
+  Vite: {path: siVite.path, color: `#${siVite.hex}`},
+  Postgres: {path: siPostgresql.path, color: `#${siPostgresql.hex}`},
+  Supabase: {path: siSupabase.path, color: `#${siSupabase.hex}`},
+  MySQL: {path: siMysql.path, color: `#${siMysql.hex}`},
 }
 
 const GenericTechIcon = ({variant}: {variant?: string}) => {
@@ -281,7 +291,7 @@ const SkillsSection = () => {
       <div className="skills-grid">
         {filteredCards.map((card) => (
           <article key={card.key} className="executive-card skill-card">
-            <h3 className="display-font section-card-title">{card.title}</h3>
+            <h2 className="display-font section-card-title">{card.title}</h2>
             <ul className="tech-badge-list">
               {card.bullets.map((item) => (
                 <TechBadge key={item} label={item} />
@@ -292,9 +302,9 @@ const SkillsSection = () => {
       </div>
 
       <article className="executive-card stack-card">
-        <h3 className="display-font section-card-title">
+        <h2 className="display-font section-card-title">
           {content.stack.title}
-        </h3>
+        </h2>
         <ul className="detail-list">
           {content.stack.bullets.map((item) => (
             <li key={item}>{item}</li>
@@ -356,7 +366,7 @@ const ProjectsSection = () => {
               {copy.labels.openLink}
             </a>
           </div>
-          <h3 className="display-font section-card-title">{project.title}</h3>
+          <h2 className="display-font section-card-title">{project.title}</h2>
           <p className="project-summary">{project.summary}</p>
           <div className="tag-row">
             {project.tags.map((tag) => (
@@ -410,9 +420,9 @@ const ProjectsSection = () => {
         <>
           <div className="section-block">
             <div className="section-block-header">
-              <h3 className="display-font section-card-title">
+              <h2 className="display-font section-card-title">
                 {locale === "es" ? "Proyectos destacados" : "Featured projects"}
-              </h3>
+              </h2>
               <p className="project-summary">
                 {locale === "es"
                   ? "Software y productos reales seleccionados para mostrar capacidad tecnica y de negocio."
@@ -424,9 +434,9 @@ const ProjectsSection = () => {
 
           <div className="section-block">
             <div className="section-block-header">
-              <h3 className="display-font section-card-title">
+              <h2 className="display-font section-card-title">
                 Automation Cases
-              </h3>
+              </h2>
               <p className="project-summary">
                 {locale === "es"
                   ? "Workflows de automatizacion, agentes y pipelines conectados a operaciones reales."
@@ -569,7 +579,7 @@ const BlogSection = () => {
             className="executive-card post-card post-card-button"
           >
             <p className="post-meta">{post.meta}</p>
-            <h3 className="display-font section-card-title">{post.title}</h3>
+            <h2 className="display-font section-card-title">{post.title}</h2>
             <p className="project-summary">{post.summary}</p>
 
             <Link

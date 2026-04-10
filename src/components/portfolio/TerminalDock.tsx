@@ -48,6 +48,7 @@ const TerminalDock = () => {
         className={`terminal-dock ${isOpen ? "is-open" : ""}`}
         aria-label="terminal"
         aria-hidden={!isOpen}
+        {...(!isOpen ? { inert: "" } as any : {})}
       >
         <header className="terminal-shell-header terminal-dock-header">
           <div className="terminal-shell-dots" aria-hidden="true">

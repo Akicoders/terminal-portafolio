@@ -606,6 +606,8 @@ export const portfolioContent: Record<Locale, LocaleContent> = {
               "shadcn/ui",
               "Tailwind",
               "Motion/GSAP",
+              "Svelte",
+              "Vite",
             ],
           },
           {
@@ -617,6 +619,9 @@ export const portfolioContent: Record<Locale, LocaleContent> = {
               "SQLite",
               "MongoDB",
               "Redis",
+              "Postgres",
+              "Supabase",
+              "MySQL",
             ],
           },
           {
